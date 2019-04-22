@@ -84,7 +84,7 @@ public class Batiment {
         else
             demandes.add(d);
 
-//        if (Constante.strategie == Strategie.fcfs) {
+//        if (Constante.strategieService == StrategieService.fcfs) {
 //            // chercher l'ascenseur le plus proche
 //            Ascenseur ascenseurChoisit = null;
 //            int tempsMin = 10000;
@@ -98,7 +98,7 @@ public class Batiment {
 //            }
 //
 //            ascenseurChoisit.notifierFifo(demande, gestionnaireEvenement, this);
-//        } else if (Constante.strategie == Strategie.sstf) {
+//        } else if (Constante.strategieService == StrategieService.sstf) {
 //            this.demandes.add(demande);
 //        }
     }

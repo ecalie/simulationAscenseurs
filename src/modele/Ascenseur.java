@@ -102,9 +102,9 @@ public class Ascenseur {
         synchronized (demandes) {
             Demande demandeChoisie = null;
             if (!demandes.isEmpty()) {
-                if (Constante.strategie == Strategie.fcfs) {
+                if (Constante.strategieService == StrategieService.fcfs) {
                     demandeChoisie = demandes.get(0);
-                } else if (Constante.strategie == Strategie.sstf) {
+                } else if (Constante.strategieService == StrategieService.sstf) {
                     int distanceMin = 1000;
                     for (Demande d : demandes) {
                         int distance = Math.abs(etageCourant - d.getEtageCourant());

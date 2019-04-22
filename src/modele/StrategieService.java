@@ -1,6 +1,6 @@
 package modele;
 
-public enum Strategie {
+public enum StrategieService {
     fcfs,
     scan,
     sstf;
