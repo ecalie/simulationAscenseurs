@@ -45,14 +45,14 @@ public class DessinBatiment extends JFrame {
                     (height - 25) - ((height - 50) / batiment.getEtages().size() * a.getEtageCourant()),
                     width / 8,
                     (height - 50) / batiment.getEtages().size() - 10,
-                   a.getPersonnes()
+                    a.getPersonnes()
             ).dessiner(g);
             j++;
         }
 
         List<Integer> abscissesPersonnes = new ArrayList<>();
         for (int i = 0; i < batiment.getEtages().size(); i++)
-            abscissesPersonnes.add(batiment.getAscenseurs().size() * width / 8+40);
+            abscissesPersonnes.add(batiment.getAscenseurs().size() * width / 8 + 40);
 
         for (Personne p : batiment.getPersonnes()) {
             if (p.isEnAttente()) {

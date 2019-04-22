@@ -1,9 +1,7 @@
 package modele;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 public class Batiment {
 
@@ -11,11 +9,13 @@ public class Batiment {
     private List<Etage> etages;
     private List<Personne> personnes;
     private GestionnaireEvenement gestionnaireEvenement;
+    private Horloge horloge;
 
     public Batiment(int nombreAscenseurs, int nombreEtages) {
         this.etages = new ArrayList<>();
         this.ascenseurs = new ArrayList<>();
         this.personnes = new ArrayList<>();
+        this.horloge = new Horloge();
 
         for (int i = 0; i < nombreAscenseurs; i++)
             this.ascenseurs.add(new Ascenseur());
@@ -26,6 +26,10 @@ public class Batiment {
 
     public void setGestionnaireEvenement(GestionnaireEvenement gestionnaireEvenement) {
         this.gestionnaireEvenement = gestionnaireEvenement;
+    }
+
+    public Horloge getHorloge() {
+        return horloge;
     }
 
     public List<Ascenseur> getAscenseurs() {
@@ -55,13 +59,15 @@ public class Batiment {
                 personne);
 
         if (Constante.strategie == Strategie.fifo) {
+            // chercher l'ascenseur le plus proche
             Ascenseur ascenseurChoisit = null;
-            int tempsRetourMin = 10000;
+            int tempsMin = 10000;
             for (Ascenseur a : ascenseurs) {
-                int tempsArrivee = Math.abs(a.getEtageCourant() - personne.getNumeroEtageCourant()) * Constante.tempsDeplacement;
-                if (tempsArrivee < tempsRetourMin) {
+                int temps = Math.max(horloge.getHeure(), a.getOccupation()) +
+                        Math.abs(a.getEtageCourant() - personne.getNumeroEtageCourant()) * Constante.tempsDeplacement;
+                if (temps < tempsMin) {
                     ascenseurChoisit = a;
-                    tempsRetourMin = tempsArrivee;
+                    tempsMin = temps;
                 }
             }
 

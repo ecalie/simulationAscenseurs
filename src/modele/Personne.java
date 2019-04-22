@@ -1,6 +1,6 @@
 package modele;
 
-public class Personne /* extends Thread */{
+public class Personne /* extends Thread */ {
     private Ascenseur ascenseur;
     private int numeroEtageCourant;
     private int numeroEtageCible;
@@ -47,7 +47,7 @@ public class Personne /* extends Thread */{
 
     public int calculerTempsTravail() {
         double u = Math.random();
-        return (int) (-Math.log(1 - u) * (60*6));
+        return (int) (-Math.log(1 - u) * (60 * 6));
     }
 
     private int genererEtageCible(int nombreEtages) {

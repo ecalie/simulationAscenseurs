@@ -11,10 +11,12 @@ public class Ascenseur {
     private int etageCourant;
     private int sens;
     private List<Personne> personnes;
+    private int occupation;
 
     public Ascenseur() {
         this.etageCourant = 1;
         this.sens = 0;
+        this.occupation = 0;
         this.personnes = new ArrayList<>();
     }
 
@@ -34,40 +36,47 @@ public class Ascenseur {
         return personnes;
     }
 
+    public int getOccupation() {
+        return occupation;
+    }
+
     public void notifierFifo(Demande demande, GestionnaireEvenement gestionnaireEvenements, Batiment batiment) {
+        int tempsDepart1 = Math.max(gestionnaireEvenements.getHorloge().getHeure(), occupation);
+        int tempsArrivee1 = tempsDepart1 + (Math.abs(this.etageCourant - demande.getEtageCourant())) * Constante.tempsDeplacement;
+        int tempsMontee = tempsArrivee1 + 1;
+        int tempsDepart2 = tempsMontee + 1;
+        int tempsArrivee2 = tempsDepart2 + (Math.abs(demande.getEtageDestination() - demande.getEtageCourant())) * Constante.tempsDeplacement;
+        int tempsDescente = tempsArrivee2 + 1;
+
         gestionnaireEvenements.ajouterEvenement(
                 new MouvementAscenseur(
-                        gestionnaireEvenements.getHorloge().getHeure() +
-                                (Math.abs(this.etageCourant - demande.getEtageCourant())) * Constante.tempsDeplacement,
+                        tempsArrivee1,
                         this,
                         demande.getEtageCourant(),
                         demande.getPersonne()));
         gestionnaireEvenements.ajouterEvenement(
                 new MouvementAscenseur(
-                        gestionnaireEvenements.getHorloge().getHeure() + 1 +
-                                (Math.abs(this.etageCourant - demande.getEtageCourant())) * Constante.tempsDeplacement +
-                                (Math.abs(demande.getEtageDestination() - demande.getEtageCourant())) * Constante.tempsDeplacement,
+                        tempsArrivee2,
                         this,
                         demande.getEtageDestination(),
                         demande.getPersonne()));
 
-
         // faire monter et descendre les personnes concernées
         gestionnaireEvenements.ajouterEvenement(
                 new MonteeDansAscenseur(
-                        gestionnaireEvenements.getHorloge().getHeure() + 1 +
-                                (Math.abs(this.etageCourant - demande.getEtageCourant())) * Constante.tempsDeplacement,
+                        tempsMontee,
                         this,
                         demande.getPersonne()));
 
         gestionnaireEvenements.ajouterEvenement(
                 new DescenteDeAscenseur(
-                        gestionnaireEvenements.getHorloge().getHeure() + 2 +
-                                (Math.abs(this.etageCourant - demande.getEtageCourant())) * Constante.tempsDeplacement +
-                                (Math.abs(demande.getEtageDestination() - demande.getEtageCourant())) * Constante.tempsDeplacement,
+                        tempsDescente,
                         demande.getPersonne(),
                         this,
                         batiment));
+
+        // mettre à jour le temps d'occupation de l'ascenseur
+        occupation = tempsDescente;
     }
 
 

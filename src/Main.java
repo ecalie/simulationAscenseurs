@@ -1,6 +1,6 @@
-import modele.*;
+import modele.Batiment;
+import modele.GestionnaireEvenement;
 import modele.evenement.ArriveeClient;
-import vue.DessinBatiment;
 
 public class Main {
     public static void main(String[] args) {
