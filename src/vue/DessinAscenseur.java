@@ -1,5 +1,6 @@
 package vue;
 
+import modele.Ascenseur;
 import modele.Personne;
 
 import java.awt.*;
@@ -7,28 +8,33 @@ import java.util.List;
 
 public class DessinAscenseur {
 
-    private List<Personne> personnes;
+    private Ascenseur ascenseur;
     private int abscisse;
     private int ordonnee;
     private int longueur;
     private int hauteur;
 
-    public DessinAscenseur(int abscisse, int ordonnee, int longueur, int hauteur, List<Personne> personnes) {
+    public DessinAscenseur(int abscisse, int ordonnee, int longueur, int hauteur, Ascenseur ascenseur) {
         this.abscisse = abscisse;
         this.ordonnee = ordonnee;
         this.longueur = longueur;
         this.hauteur = hauteur;
-        this.personnes = personnes;
+        this.ascenseur = ascenseur;
     }
 
     public void dessiner(Graphics g) {
+        if (ascenseur.isOccupe())
+            g.setColor(Color.RED);
+
         g.drawRect(abscisse,
                 ordonnee - hauteur,
                 longueur,
                 hauteur);
 
+        g.setColor(Color.BLACK);
+
         int decalage = 15;
-        for (Personne p : personnes) {
+        for (Personne p : ascenseur.getPersonnes()) {
             new DessinPersonne(
                     abscisse + decalage,
                     ordonnee

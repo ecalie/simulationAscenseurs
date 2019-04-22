@@ -24,15 +24,23 @@ public class DescenteDeAscenseur extends Evenement {
         this.personne.setAscenseur(null);
         this.ascenseur.getPersonnes().remove(personne);
 
+        if (ascenseur.getPersonnes().isEmpty()) {
+            ascenseur.setOccupe(false);
+            ascenseur.choisirProchaineDemande(batiment.getDemandes(), batiment);
+        }
+
         System.out.println("descente en " + temps + " de " + personne.getNumeroEtageCible());
     }
 
     @Override
     public List<Evenement> genererProchainsEvenements() {
+        // ajouter l'arrivée de la personne après son temps de travail
         List<Evenement> evenemnts = new ArrayList<>();
         if (personne.getNumeroEtageCible() != 1) {
+            // mettre à jour les étages de la personne
             personne.setNumeroEtageCourant(personne.getNumeroEtageCible());
             personne.setNumeroEtageCible(1);
+            // ajouter un évènement pour son retour
             evenemnts.add(new ArriveeClient(temps + personne.calculerTempsTravail(), batiment, personne));
         }
         return evenemnts;

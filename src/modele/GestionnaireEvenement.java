@@ -16,7 +16,6 @@ public class GestionnaireEvenement {
         this.horloge = batiment.getHorloge();
         this.dessinBatiment = new DessinBatiment(batiment, horloge);
         this.evenements = new PriorityQueue<>(Comparator.comparingInt(Evenement::getTemps));
-
     }
 
     public Horloge getHorloge() {

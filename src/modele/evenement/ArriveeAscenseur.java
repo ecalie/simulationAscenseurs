@@ -6,16 +6,14 @@ import modele.Personne;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MouvementAscenseur extends Evenement {
+public class ArriveeAscenseur extends Evenement {
     private Ascenseur ascenseur;
     private int etage;
-    private Personne personne;
 
-    public MouvementAscenseur(int temps, Ascenseur ascenseur, int etage, Personne personne) {
+    public ArriveeAscenseur(int temps, Ascenseur ascenseur, int etage) {
         super(temps);
         this.ascenseur = ascenseur;
         this.etage = etage;
-        this.personne = personne;
     }
 
     @Override
@@ -26,7 +24,6 @@ public class MouvementAscenseur extends Evenement {
             ascenseur.setSens(1);
 
         this.ascenseur.setEtageCourant(etage);
-
 
         System.out.println("déplacement en " + temps + " vers " + etage);
     }

@@ -45,7 +45,7 @@ public class DessinBatiment extends JFrame {
                     (height - 25) - ((height - 50) / batiment.getEtages().size() * a.getEtageCourant()),
                     width / 8,
                     (height - 50) / batiment.getEtages().size() - 10,
-                    a.getPersonnes()
+                    a
             ).dessiner(g);
             j++;
         }

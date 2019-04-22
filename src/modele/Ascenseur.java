@@ -1,8 +1,9 @@
 package modele;
 
+import modele.evenement.ArriveeAscenseur;
+import modele.evenement.DepartAscenseur;
 import modele.evenement.DescenteDeAscenseur;
 import modele.evenement.MonteeDansAscenseur;
-import modele.evenement.MouvementAscenseur;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +12,25 @@ public class Ascenseur {
     private int etageCourant;
     private int sens;
     private List<Personne> personnes;
-    private int occupation;
+    private int tempsOccupation;
+    private GestionnaireEvenement gestionnaireEvenements;
+    private boolean occupe;
 
-    public Ascenseur() {
+    public Ascenseur(GestionnaireEvenement gestionnaireEvenements) {
         this.etageCourant = 1;
         this.sens = 0;
-        this.occupation = 0;
+        this.tempsOccupation = 0;
+        this.gestionnaireEvenements = gestionnaireEvenements;
         this.personnes = new ArrayList<>();
+        this.occupe = false;
+    }
+
+    public boolean isOccupe() {
+        return occupe;
+    }
+
+    public void setOccupe(boolean occupe) {
+        this.occupe = occupe;
     }
 
     public void setSens(int sens) {
@@ -36,30 +49,36 @@ public class Ascenseur {
         return personnes;
     }
 
-    public int getOccupation() {
-        return occupation;
+    public int getTempsOccupation() {
+        return tempsOccupation;
     }
 
-    public void notifierFifo(Demande demande, GestionnaireEvenement gestionnaireEvenements, Batiment batiment) {
-        int tempsDepart1 = Math.max(gestionnaireEvenements.getHorloge().getHeure(), occupation);
+    public void traiterDemande(Demande demande, Batiment batiment) {
+        int tempsDepart1 = Math.max(gestionnaireEvenements.getHorloge().getHeure(), tempsOccupation);
         int tempsArrivee1 = tempsDepart1 + (Math.abs(this.etageCourant - demande.getEtageCourant())) * Constante.tempsDeplacement;
         int tempsMontee = tempsArrivee1 + 1;
         int tempsDepart2 = tempsMontee + 1;
         int tempsArrivee2 = tempsDepart2 + (Math.abs(demande.getEtageDestination() - demande.getEtageCourant())) * Constante.tempsDeplacement;
         int tempsDescente = tempsArrivee2 + 1;
 
+        // faire déplacer l'ascenseur
         gestionnaireEvenements.ajouterEvenement(
-                new MouvementAscenseur(
+                new DepartAscenseur(tempsDepart1, this));
+
+        gestionnaireEvenements.ajouterEvenement(
+                new ArriveeAscenseur(
                         tempsArrivee1,
                         this,
-                        demande.getEtageCourant(),
-                        demande.getPersonne()));
+                        demande.getEtageCourant()));
+
         gestionnaireEvenements.ajouterEvenement(
-                new MouvementAscenseur(
+                new DepartAscenseur(tempsDepart2, this));
+
+        gestionnaireEvenements.ajouterEvenement(
+                new ArriveeAscenseur(
                         tempsArrivee2,
                         this,
-                        demande.getEtageDestination(),
-                        demande.getPersonne()));
+                        demande.getEtageDestination()));
 
         // faire monter et descendre les personnes concernées
         gestionnaireEvenements.ajouterEvenement(
@@ -76,15 +95,28 @@ public class Ascenseur {
                         batiment));
 
         // mettre à jour le temps d'occupation de l'ascenseur
-        occupation = tempsDescente;
+        tempsOccupation = tempsDescente;
     }
 
-
-    // TODO
-    public void notifierScan(Demande demande, GestionnaireEvenement gestionnaireEvenements) {
-        // regarder la demande est sur le chemin
-        if (sens == 1 && etageCourant <= demande.getEtageCourant()) {
-
+    public void choisirProchaineDemande(List<Demande> demandes, Batiment batiment) {
+        synchronized (demandes) {
+            Demande demandeChoisie = null;
+            if (!demandes.isEmpty()) {
+                if (Constante.strategie == Strategie.fcfs) {
+                    demandeChoisie = demandes.get(0);
+                } else if (Constante.strategie == Strategie.sstf) {
+                    int distanceMin = 1000;
+                    for (Demande d : demandes) {
+                        int distance = Math.abs(etageCourant - d.getEtageCourant());
+                        if (distance < distanceMin) {
+                            demandeChoisie = d;
+                            distanceMin = distance;
+                        }
+                    }
+                }
+                traiterDemande(demandeChoisie, batiment);
+                demandes.remove(demandeChoisie);
+            }
         }
     }
 }
