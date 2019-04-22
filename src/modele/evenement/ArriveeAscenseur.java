@@ -1,7 +1,6 @@
 package modele.evenement;
 
 import modele.Ascenseur;
-import modele.Personne;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +23,8 @@ public class ArriveeAscenseur extends Evenement {
             ascenseur.setSens(1);
 
         this.ascenseur.setEtageCourant(etage);
+        ascenseur.setEnMouvement(false);
+
 
         System.out.println("déplacement en " + temps + " vers " + etage);
     }

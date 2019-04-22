@@ -15,7 +15,7 @@ public class DepartAscenseur extends Evenement {
 
     @Override
     public void executer() {
-        this.ascenseur.setOccupe(true);
+        this.ascenseur.setEnMouvement(true);
     }
 
     @Override

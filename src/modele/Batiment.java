@@ -70,7 +70,7 @@ public class Batiment {
         Ascenseur ascenseurDisponible = null;
         int distance;
         for (Ascenseur a : ascenseurs) {
-            if (!a.isOccupe()) {
+            if (!a.isEnMouvement()) {
                 distance = Math.abs(a.getEtageCourant() - personne.getNumeroEtageCourant());
                 if (distance < distanceMin) {
                     distanceMin = distance;

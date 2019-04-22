@@ -14,7 +14,7 @@ public class Ascenseur {
     private List<Personne> personnes;
     private int tempsOccupation;
     private GestionnaireEvenement gestionnaireEvenements;
-    private boolean occupe;
+    private boolean enMouvement;
 
     public Ascenseur(GestionnaireEvenement gestionnaireEvenements) {
         this.etageCourant = 1;
@@ -22,15 +22,15 @@ public class Ascenseur {
         this.tempsOccupation = 0;
         this.gestionnaireEvenements = gestionnaireEvenements;
         this.personnes = new ArrayList<>();
-        this.occupe = false;
+        this.enMouvement = false;
     }
 
-    public boolean isOccupe() {
-        return occupe;
+    public boolean isEnMouvement() {
+        return enMouvement;
     }
 
-    public void setOccupe(boolean occupe) {
-        this.occupe = occupe;
+    public void setEnMouvement(boolean enMouvement) {
+        this.enMouvement = enMouvement;
     }
 
     public void setSens(int sens) {
@@ -102,9 +102,11 @@ public class Ascenseur {
         synchronized (demandes) {
             Demande demandeChoisie = null;
             if (!demandes.isEmpty()) {
-                if (Constante.strategieService == StrategieService.fcfs) {
+               switch(Constante.strategieService) {
+                   case fcfs:
                     demandeChoisie = demandes.get(0);
-                } else if (Constante.strategieService == StrategieService.sstf) {
+                    break;
+                   case sstf:
                     int distanceMin = 1000;
                     for (Demande d : demandes) {
                         int distance = Math.abs(etageCourant - d.getEtageCourant());
@@ -113,10 +115,43 @@ public class Ascenseur {
                             distanceMin = distance;
                         }
                     }
+                    break;
                 }
                 traiterDemande(demandeChoisie, batiment);
                 demandes.remove(demandeChoisie);
+            } else {
+                // suivre la stratégie de marche au ralentit
+                switch (Constante.strategieRalenti) {
+                    case inferieur:
+                        traiterRalenti(this.etageCourant - 1);
+                        break;
+                    case superieur:
+                        traiterRalenti(this.etageCourant + 1);
+                        break;
+                    case milieu:
+                        traiterRalenti(batiment.getEtages().size() / 2 + 1);
+                        break;
+                    case etage1:
+                        traiterRalenti(1);
+                        break;
+                    default:
+                        // immobile par défaut
+                        break;
+                }
             }
         }
+    }
+
+    private void traiterRalenti(int etageDestination) {
+        int tempsDepart = Math.max(gestionnaireEvenements.getHorloge().getHeure(), tempsOccupation);
+        int tempsArrivee = tempsDepart + (Math.abs(this.etageCourant - etageDestination)) * Constante.tempsDeplacement;
+
+        gestionnaireEvenements.ajouterEvenement(
+                new DepartAscenseur(tempsDepart, this)
+        );
+
+        gestionnaireEvenements.ajouterEvenement(
+                new ArriveeAscenseur(tempsArrivee, this, etageDestination)
+        );
     }
 }

@@ -4,7 +4,6 @@ import modele.Ascenseur;
 import modele.Personne;
 
 import java.awt.*;
-import java.util.List;
 
 public class DessinAscenseur {
 
@@ -23,7 +22,7 @@ public class DessinAscenseur {
     }
 
     public void dessiner(Graphics g) {
-        if (ascenseur.isOccupe())
+        if (ascenseur.isEnMouvement())
             g.setColor(Color.RED);
 
         g.drawRect(abscisse,

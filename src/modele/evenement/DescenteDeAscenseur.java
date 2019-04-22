@@ -25,7 +25,6 @@ public class DescenteDeAscenseur extends Evenement {
         this.ascenseur.getPersonnes().remove(personne);
 
         if (ascenseur.getPersonnes().isEmpty()) {
-            ascenseur.setOccupe(false);
             ascenseur.choisirProchaineDemande(batiment.getDemandes(), batiment);
         }
 
