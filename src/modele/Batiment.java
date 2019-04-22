@@ -58,7 +58,7 @@ public class Batiment {
                 personne.getNumeroEtageCible(),
                 personne);
 
-        if (Constante.strategie == Strategie.fifo) {
+        if (Constante.strategie == Strategie.fcfs) {
             // chercher l'ascenseur le plus proche
             Ascenseur ascenseurChoisit = null;
             int tempsMin = 10000;

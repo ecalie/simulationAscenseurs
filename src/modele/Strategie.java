@@ -1,7 +1,7 @@
 package modele;
 
 public enum Strategie {
-    fifo,
+    fcfs,
     scan,
     closest;
 }
