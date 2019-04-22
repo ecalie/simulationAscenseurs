@@ -3,6 +3,7 @@ package modele.evenement;
 import modele.Batiment;
 import modele.Constante;
 import modele.Personne;
+import vue.FenetreLogging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +27,14 @@ public class ArriveeClient extends Evenement {
     }
 
     @Override
-    public List<Evenement> executer() {
+    public List<Evenement> executer(FenetreLogging fenetreLogging) {
         // ajouter la personne dans le batiment
         batiment.ajouterPersonne(personne);
 
         // appeler un ascenseur
         batiment.demanderAscenseur(personne);
 
-        System.out.println("arrivée à " + temps + " pour l'étage " + personne.getNumeroEtageCible());
+        fenetreLogging.ajouterEvenement(this);
         return genererProchainsEvenements();
     }
 
@@ -72,5 +73,10 @@ public class ArriveeClient extends Evenement {
             return 1;
         else
             return k * factorielle(k - 1);
+    }
+
+    @Override
+    public String toString() {
+        return "un client arrive à l'étage " + personne.getNumeroEtageCourant() + " au temps " + temps;
     }
 }

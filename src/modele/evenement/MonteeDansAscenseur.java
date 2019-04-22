@@ -2,8 +2,8 @@ package modele.evenement;
 
 import modele.Ascenseur;
 import modele.Batiment;
-import modele.Constante;
 import modele.Personne;
+import vue.FenetreLogging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +19,13 @@ public class MonteeDansAscenseur extends Evenement {
     }
 
     @Override
-    public List<Evenement> executer() {
+    public List<Evenement> executer(FenetreLogging fenetreLogging) {
         boolean nouvellePersonne = false;
         for (Personne p : personnes)
             if (!ascenseur.getPersonnes().contains(p) && p.getNumeroEtageCourant() == ascenseur.getEtageCourant()) {
                 p.setAscenseur(ascenseur);
                 this.ascenseur.getPersonnes().add(p);
-                System.out.println("montée en " + temps);
+                fenetreLogging.ajouterEvenement(this);
                 nouvellePersonne = true;
             }
 
@@ -34,5 +34,10 @@ public class MonteeDansAscenseur extends Evenement {
         }
 
         return new ArrayList<>();
+    }
+
+    @Override
+    public String toString() {
+        return "une personne monte à l'étage " + ascenseur.getEtageCourant() + " au temps " + temps;
     }
 }

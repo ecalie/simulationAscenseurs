@@ -1,6 +1,7 @@
 package modele.evenement;
 
 import modele.Batiment;
+import vue.FenetreLogging;
 
 import java.util.List;
 
@@ -17,6 +18,6 @@ public abstract class Evenement {
         return temps;
     }
 
-    public abstract List<Evenement> executer();
+    public abstract List<Evenement> executer(FenetreLogging fenetreLogging);
 
 }

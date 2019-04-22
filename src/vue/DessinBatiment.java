@@ -26,7 +26,6 @@ public class DessinBatiment extends JFrame {
 
     @Override
     public void paint(Graphics g) {
-        super.paint(g);
         int width = this.getWidth();
         int height = this.getHeight();
 

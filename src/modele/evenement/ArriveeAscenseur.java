@@ -2,6 +2,7 @@ package modele.evenement;
 
 import modele.Ascenseur;
 import modele.Batiment;
+import vue.FenetreLogging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class ArriveeAscenseur extends Evenement {
     }
 
     @Override
-    public List<Evenement> executer() {
+    public List<Evenement> executer(FenetreLogging fenetreLogging) {
         if (ascenseur.getEtageCourant() < etage)
             ascenseur.setSens(-1);
         else if (ascenseur.getEtageCourant() > etage)
@@ -25,8 +26,6 @@ public class ArriveeAscenseur extends Evenement {
 
         this.ascenseur.setEtageCourant(etage);
         ascenseur.setEnMouvement(false);
-
-        System.out.println("déplacement en " + temps + " vers " + etage);
 
         List<Evenement> evenements = new ArrayList<>();
         evenements.add(
@@ -43,7 +42,13 @@ public class ArriveeAscenseur extends Evenement {
                             ascenseur,
                             batiment));
         }
+        fenetreLogging.ajouterEvenement(this);
 
         return evenements;
+    }
+
+    @Override
+    public String toString() {
+        return "un ascenseur arrive à l'étage " + etage + " au temps " + temps;
     }
 }

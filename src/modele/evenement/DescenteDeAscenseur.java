@@ -3,6 +3,7 @@ package modele.evenement;
 import modele.Ascenseur;
 import modele.Batiment;
 import modele.Personne;
+import vue.FenetreLogging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,14 +17,13 @@ public class DescenteDeAscenseur extends Evenement {
     }
 
     @Override
-    public List<Evenement> executer() {
+    public List<Evenement> executer(FenetreLogging fenetreLogging) {
         List<Evenement> evenements = new ArrayList<>();
         int i = 0;
         while ( i < ascenseur.getPersonnes().size()) {
             Personne p = ascenseur.getPersonnes().get(i);
             if (p.getNumeroEtageCible() == ascenseur.getEtageCourant()) {
-
-                System.out.println("descente en " + temps);
+                fenetreLogging.ajouterEvenement(this);
 
 
                 p.setAscenseur(null);
@@ -44,5 +44,10 @@ public class DescenteDeAscenseur extends Evenement {
         ascenseur.choisirProchaineDemande(batiment);
 
         return evenements;
+    }
+
+    @Override
+    public String toString() {
+        return "une personne descend à l'étage " + ascenseur.getEtageCourant() + " au temps " + temps;
     }
 }
