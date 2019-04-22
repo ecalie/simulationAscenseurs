@@ -6,7 +6,7 @@ import modele.evenement.ArriveeClient;
 public class Main {
     public static void main(String[] args) {
         int nbEtages = 5;
-        int nbAscenseurs = 2;
+        int nbAscenseurs = 1;
         Batiment batiment = new Batiment(nbAscenseurs, nbEtages);
 
         // générer le premier événement

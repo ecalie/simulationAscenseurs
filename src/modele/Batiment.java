@@ -60,20 +60,29 @@ public class Batiment {
     }
 
     public void demanderAscenseur(Personne personne) {
-
-        this.demandes.add(new Demande(
+        Demande d  = new Demande(
                 personne.getNumeroEtageCourant(),
                 personne.getNumeroEtageCible(),
-                personne));
+                personne);
 
-        // trouver un acenseur non occupé
-        // TODO prendre le plus proche
+        // trouver l'acenseur non occupé le plus proche
+        int distanceMin = 1000;
+        Ascenseur ascenseurDisponible = null;
+        int distance;
         for (Ascenseur a : ascenseurs) {
             if (!a.isOccupe()) {
-                a.choisirProchaineDemande(demandes, this);
-                break;
+                distance = Math.abs(a.getEtageCourant() - personne.getNumeroEtageCourant());
+                if (distance < distanceMin) {
+                    distanceMin = distance;
+                    ascenseurDisponible = a;
+                }
             }
         }
+
+        if (ascenseurDisponible != null)
+            ascenseurDisponible.traiterDemande(d, this);
+        else
+            demandes.add(d);
 
 //        if (Constante.strategie == Strategie.fcfs) {
 //            // chercher l'ascenseur le plus proche

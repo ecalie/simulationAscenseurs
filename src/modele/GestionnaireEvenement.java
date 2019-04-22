@@ -1,5 +1,6 @@
 package modele;
 
+import modele.evenement.ArriveeClient;
 import modele.evenement.Evenement;
 import vue.DessinBatiment;
 
@@ -32,8 +33,16 @@ public class GestionnaireEvenement {
             horloge.avancer(e.getTemps());
             e.executer();
             dessinBatiment.repaint();
-            evenements.addAll(e.genererProchainsEvenements());
+            if (e instanceof ArriveeClient && !contientArrivee())
+                evenements.addAll(e.genererProchainsEvenements());
         }
+    }
+
+    private boolean contientArrivee() {
+        for (Evenement e : evenements)
+            if (e instanceof ArriveeClient)
+                return true;
+        return false;
     }
 
 }
