@@ -9,36 +9,35 @@ import java.util.List;
 
 public class ArriveeClient extends Evenement {
     private Personne personne;
-    private Batiment batiment;
 
     public ArriveeClient(int temps, Batiment batiment) {
-        super(temps);
-        this.batiment = batiment;
+        super(temps, batiment);
         this.personne = new Personne(batiment.getEtages().size());
     }
 
     public ArriveeClient(int temps, Batiment batiment, Personne personne) {
-        super(temps);
+        super(temps, batiment);
         this.batiment = batiment;
         this.personne = personne;
     }
 
+    public Personne getPersonne() {
+        return personne;
+    }
 
     @Override
-    public void executer() {
+    public List<Evenement> executer() {
         // ajouter la personne dans le batiment
-        if (personne.getNumeroEtageCible() != 1)
             batiment.ajouterPersonne(personne);
 
         // appeler un ascenseur
         batiment.demanderAscenseur(personne);
-        personne.setEnAttente(true);
 
         System.out.println("arrivée à " + temps + " pour l'étage " + personne.getNumeroEtageCible());
+        return genererProchainsEvenements();
     }
 
-    @Override
-    public List<Evenement> genererProchainsEvenements() {
+    private List<Evenement> genererProchainsEvenements() {
         int nombreArrivee = prochaineArrivee();
         int tempsProchaineArrivee = temps + 1;
         while (nombreArrivee == 0) {

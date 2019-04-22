@@ -60,7 +60,7 @@ public class Batiment {
     }
 
     public void demanderAscenseur(Personne personne) {
-        Demande d  = new Demande(
+        Demande d = new Demande(
                 personne.getNumeroEtageCourant(),
                 personne.getNumeroEtageCible(),
                 personne);
@@ -80,7 +80,7 @@ public class Batiment {
         }
 
         if (ascenseurDisponible != null)
-            ascenseurDisponible.traiterDemande(d, this);
+            ascenseurDisponible.traiterDemande(d.getEtageCourant(), this);
         else
             demandes.add(d);
 

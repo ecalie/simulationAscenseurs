@@ -55,7 +55,7 @@ public class DessinBatiment extends JFrame {
             abscissesPersonnes.add(batiment.getAscenseurs().size() * width / 8 + 40);
 
         for (Personne p : batiment.getPersonnes()) {
-            if (p.isEnAttente()) {
+            if (p.getAscenseur() == null) {
                 new DessinPersonne(
                         abscissesPersonnes.get(p.getNumeroEtageCourant()),
                         (height - 50) - (height - 50) * p.getNumeroEtageCourant() / batiment.getEtages().size() + 25

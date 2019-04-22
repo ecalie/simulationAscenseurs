@@ -4,22 +4,13 @@ public class Personne /* extends Thread */ {
     private Ascenseur ascenseur;
     private int numeroEtageCourant;
     private int numeroEtageCible;
-    private boolean enAttente;
 
     public Personne(int nombreEtages) {
         this.ascenseur = null;
         this.numeroEtageCourant = 1;
-        this.enAttente = false;
         this.numeroEtageCible = this.genererEtageCible(nombreEtages);
     }
 
-    public boolean isEnAttente() {
-        return enAttente;
-    }
-
-    public void setEnAttente(boolean enAttente) {
-        this.enAttente = enAttente;
-    }
 
     public Ascenseur getAscenseur() {
         return ascenseur;

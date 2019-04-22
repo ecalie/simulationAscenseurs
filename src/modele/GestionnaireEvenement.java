@@ -31,16 +31,17 @@ public class GestionnaireEvenement {
         while (evenements.size() > 0) {
             Evenement e = evenements.poll();
             horloge.avancer(e.getTemps());
-            e.executer();
+            if (!(e instanceof ArriveeClient) || !contientArrivee())
+                evenements.addAll(e.executer());
+            else
+                e.executer();
             dessinBatiment.repaint();
-            if (e instanceof ArriveeClient && !contientArrivee())
-                evenements.addAll(e.genererProchainsEvenements());
         }
     }
 
     private boolean contientArrivee() {
         for (Evenement e : evenements)
-            if (e instanceof ArriveeClient)
+            if (e instanceof ArriveeClient && ((ArriveeClient) e).getPersonne().getNumeroEtageCible() != 1)
                 return true;
         return false;
     }

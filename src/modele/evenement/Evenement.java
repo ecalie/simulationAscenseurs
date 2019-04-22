@@ -1,20 +1,22 @@
 package modele.evenement;
 
+import modele.Batiment;
+
 import java.util.List;
 
 public abstract class Evenement {
     protected int temps;
+    protected Batiment batiment;
 
-    public Evenement(int temps) {
+    public Evenement(int temps, Batiment batiment) {
         this.temps = temps;
+        this.batiment = batiment;
     }
 
     public int getTemps() {
         return temps;
     }
 
-    public abstract void executer();
-
-    public abstract List<Evenement> genererProchainsEvenements();
+    public abstract List<Evenement> executer();
 
 }
