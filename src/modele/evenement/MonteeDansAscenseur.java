@@ -29,37 +29,10 @@ public class MonteeDansAscenseur extends Evenement {
                 nouvellePersonne = true;
             }
 
-
-        List<Evenement> evenements = new ArrayList<>();
-
         if (nouvellePersonne) {
-            switch (Constante.strategieService) {
-                case sstf:
-                    int distanceMin = 1000;
-                    int etageDestination = 1;
-                    for (Personne p : ascenseur.getPersonnes()) {
-                        if (p.getNumeroEtageCible() - ascenseur.getEtageCourant() < distanceMin) {
-                            distanceMin = p.getNumeroEtageCible() - ascenseur.getEtageCourant();
-                            etageDestination = p.getNumeroEtageCible();
-                        }
-                    }
-                    evenements.add(new DepartAscenseur(
-                            temps + 1,
-                            ascenseur,
-                            etageDestination,
-                            batiment));
-                    break;
-                default:
-                    // fcfs par défaut
-                    evenements.add(new DepartAscenseur(
-                            temps + 1,
-                            ascenseur,
-                            ascenseur.getPersonnes().get(0).getNumeroEtageCible(),
-                            batiment));
-                    break;
-            }
+            ascenseur.choisirProchaineDemande(batiment);
         }
 
-        return evenements;
+        return new ArrayList<>();
     }
 }

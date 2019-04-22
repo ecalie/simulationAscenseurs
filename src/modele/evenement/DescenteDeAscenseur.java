@@ -41,9 +41,7 @@ public class DescenteDeAscenseur extends Evenement {
             }
         }
 
-        if (ascenseur.getPersonnes().isEmpty()) {
-            ascenseur.choisirProchaineDemande(batiment.getDemandes(), batiment);
-        }
+        ascenseur.choisirProchaineDemande(batiment);
 
         return evenements;
     }

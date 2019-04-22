@@ -28,7 +28,7 @@ public class ArriveeClient extends Evenement {
     @Override
     public List<Evenement> executer() {
         // ajouter la personne dans le batiment
-            batiment.ajouterPersonne(personne);
+        batiment.ajouterPersonne(personne);
 
         // appeler un ascenseur
         batiment.demanderAscenseur(personne);

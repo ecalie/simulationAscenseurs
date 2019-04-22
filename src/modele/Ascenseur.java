@@ -55,48 +55,63 @@ public class Ascenseur {
 
     }
 
-    public void choisirProchaineDemande(List<Demande> demandes, Batiment batiment) {
-        synchronized (demandes) {
-            Demande demandeChoisie = null;
-            if (!demandes.isEmpty()) {
-                switch (Constante.strategieService) {
-                    case fcfs:
-                        demandeChoisie = demandes.get(0);
-                        break;
-                    case sstf:
-                        int distanceMin = 1000;
-                        for (Demande d : demandes) {
-                            int distance = Math.abs(etageCourant - d.getEtageCourant());
-                            if (distance < distanceMin) {
-                                demandeChoisie = d;
-                                distanceMin = distance;
-                            }
-                        }
-                        break;
-                }
-                traiterDemande(demandeChoisie.getEtageCourant(), batiment);
-                demandes.remove(demandeChoisie);
-            } else {
-                // suivre la stratégie de marche au ralentit
-                switch (Constante.strategieRalenti) {
-                    case inferieur:
-                        traiterRalenti(this.etageCourant - 1, batiment);
-                        break;
-                    case superieur:
-                        traiterRalenti(this.etageCourant + 1, batiment);
-                        break;
-                    case milieu:
-                        traiterRalenti(batiment.getEtages().size() / 2 + 1, batiment);
-                        break;
-                    case etage1:
-                        traiterRalenti(1, batiment);
-                        break;
-                    default:
-                        // immobile par défaut
-                        break;
-                }
+    public synchronized void choisirProchaineDemande(Batiment batiment) {
+        if (batiment.getPersonnes().isEmpty()) {
+            // suivre la stratégie de marche au ralentit
+            switch (Constante.strategieRalenti) {
+                case inferieur:
+                    traiterRalenti(this.etageCourant - 1, batiment);
+                    break;
+                case superieur:
+                    traiterRalenti(this.etageCourant + 1, batiment);
+                    break;
+                case milieu:
+                    traiterRalenti(batiment.getEtages().size() / 2 + 1, batiment);
+                    break;
+                case etage1:
+                    traiterRalenti(1, batiment);
+                    break;
+                default:
+                    // immobile par défaut
+                    break;
             }
+        } else if (personnes.isEmpty()) {
+            List<Personne> personnesEnAttente = new ArrayList<>();
+            for (Personne p : batiment.getPersonnes())
+                if (p.getAscenseur() == null)
+                    personnesEnAttente.add(p);
+            choisirDestination(personnesEnAttente, false, batiment);
+        } else {
+            choisirDestination(personnes, true, batiment);
         }
+    }
+
+    private void choisirDestination(List<Personne> personnes, boolean deposer, Batiment batiment) {
+        Personne demandeChoisie = null;
+        switch (Constante.strategieService) {
+            case fcfs:
+                demandeChoisie = personnes.get(0);
+                break;
+            case sstf:
+                int distanceMin = 1000;
+                int distance;
+                for (Personne p : personnes) {
+                    if (deposer)
+                        distance = Math.abs(etageCourant - p.getNumeroEtageCible());
+                    else
+                        distance = Math.abs(etageCourant - p.getNumeroEtageCourant());
+
+                    if (distance < distanceMin) {
+                        demandeChoisie = p;
+                        distanceMin = distance;
+                    }
+                }
+                break;
+        }
+        if (deposer)
+            traiterDemande(demandeChoisie.getNumeroEtageCible(), batiment);
+        else
+            traiterDemande(demandeChoisie.getNumeroEtageCourant(), batiment);
     }
 
     private void traiterRalenti(int etageDestination, Batiment batiment) {
