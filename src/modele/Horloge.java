@@ -13,11 +13,13 @@ public class Horloge {
     }
 
     public void avancer(int temps) {
-        this.heure = temps;
-        try {
-            Thread.sleep(Constante.tempsAttente);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if (heure != temps) {
+            this.heure = temps;
+            try {
+                Thread.sleep(Constante.tempsAttente);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
