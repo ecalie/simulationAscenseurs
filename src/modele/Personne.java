@@ -38,7 +38,7 @@ public class Personne /* extends Thread */ {
 
     public int calculerTempsTravail() {
         double u = Math.random();
-        return (int) (-Math.log(1 - u) * (60 * 6));
+        return (int) (-Math.log(1 - u) * Constante.tempsTravail);
     }
 
     private int genererEtageCible(int nombreEtages) {

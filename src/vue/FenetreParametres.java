@@ -12,6 +12,8 @@ public class FenetreParametres extends JFrame {
 
     private JLabel nbAscenseurs;
     private JLabel nbEtages;
+    private JLabel nbArrivee;
+    private JLabel tempsTravail;
     private JComboBox<StrategieService> strategieService;
     private JComboBox<StrategieRalenti> strategieRalenti;
 
@@ -23,25 +25,51 @@ public class FenetreParametres extends JFrame {
         this.ajouterNbEtages();
         this.ajouterStrategieService();
         this.ajouterStrategieRalenti();
+        this.ajouterLoiArrivee();
+        this.ajouterLoiTempsTravail();
+
         this.ajouterBtnGo();
 
         this.getContentPane().setBackground(Color.LIGHT_GRAY);
 
-        this.setSize(new Dimension(250, 200));
+        this.setSize(new Dimension(270, 270));
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
+    public int getNbAscenseurs() {
+        return (int) Double.parseDouble(this.nbAscenseurs.getText());
+    }
+
+    public int getNbEtages() {
+        return (int) Double.parseDouble(this.nbEtages.getText());
+    }
+
+    public StrategieRalenti getStrategieRalenti() {
+        return (StrategieRalenti) this.strategieRalenti.getSelectedItem();
+    }
+
+    public StrategieService getStrtategieService() {
+        return (StrategieService) this.strategieService.getSelectedItem();
+    }
+
+    public double getLoiArrivee() {
+        return Double.parseDouble(this.nbArrivee.getText());
+    }
+
+    public int getTempsTravail(){
+        return (int) Double.parseDouble(this.tempsTravail.getText());
+    }
+
     private void ajouterNbAscenseurs() {
-        JLabel labelAscenseurs = new JLabel("Nombre d'ascenseurs ");
-        nbAscenseurs = new JLabel("1");
+        JLabel labelAscenseurs = new JLabel("Nombre d'ascenseurs      ");
+        nbAscenseurs = new JLabel("1.0");
         nbAscenseurs.setForeground(Color.DARK_GRAY);
-        nbAscenseurs.setSize(30, 20);
         JLabel btnAscenseurPlus = new JLabel(" + ");
         JLabel btnAscenseurMoins = new JLabel(" - ");
-        btnAscenseurMoins.addMouseListener(new ClickPlusMoins(nbAscenseurs, false, 1));
-        btnAscenseurPlus.addMouseListener(new ClickPlusMoins(nbAscenseurs, true, 1));
+        btnAscenseurMoins.addMouseListener(new ClickPlusMoins(nbAscenseurs, false, 1,1));
+        btnAscenseurPlus.addMouseListener(new ClickPlusMoins(nbAscenseurs, true, 1,1));
 
         JPanel panelBoutonsAscenseur = new JPanel(new BorderLayout());
         panelBoutonsAscenseur.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
@@ -58,14 +86,13 @@ public class FenetreParametres extends JFrame {
     }
 
     private void ajouterNbEtages() {
-        JLabel labelEtages = new JLabel("Nombre d'étages        ");
-        nbEtages = new JLabel("4");
+        JLabel labelEtages = new JLabel("Nombre d'étages             ");
+        nbEtages = new JLabel("4.0");
         nbEtages.setForeground(Color.DARK_GRAY);
-        nbEtages.setSize(30, 20);
         JLabel btnEtagePlus = new JLabel(" + ");
         JLabel btnEtageMoins = new JLabel(" - ");
-        btnEtageMoins.addMouseListener(new ClickPlusMoins(nbEtages, false, 2));
-        btnEtagePlus.addMouseListener(new ClickPlusMoins(nbEtages, true, 2));
+        btnEtageMoins.addMouseListener(new ClickPlusMoins(nbEtages, false, 2,1));
+        btnEtagePlus.addMouseListener(new ClickPlusMoins(nbEtages, true, 2,1));
 
         JPanel panelBoutonsEtages = new JPanel(new BorderLayout());
         panelBoutonsEtages.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
@@ -82,7 +109,7 @@ public class FenetreParametres extends JFrame {
     }
 
     private void ajouterStrategieService() {
-        JLabel labelService = new JLabel("Stratégie de service ");
+        JLabel labelService = new JLabel("Stratégie de service         ");
         strategieService = new JComboBox<>(StrategieService.values());
         strategieService.setBackground(Color.GRAY);
         strategieService.setRenderer(new ComboRenderer());
@@ -93,7 +120,7 @@ public class FenetreParametres extends JFrame {
     }
 
     private void ajouterStrategieRalenti() {
-        JLabel labelRalenti = new JLabel("Stratégie idle   ");
+        JLabel labelRalenti = new JLabel("Stratégie idle           ");
         strategieRalenti = new JComboBox<>(StrategieRalenti.values());
         strategieRalenti.setBackground(Color.GRAY);
         strategieRalenti.setRenderer(new ComboRenderer());
@@ -104,6 +131,52 @@ public class FenetreParametres extends JFrame {
         this.add(strategieRalenti);
     }
 
+    private void ajouterLoiArrivee() {
+        JLabel labelArrivee = new JLabel("Nombre d'arrivées (/min)");
+        nbArrivee = new JLabel("0.5");
+        nbArrivee.setForeground(Color.DARK_GRAY);
+        JLabel btnArriveePlus = new JLabel(" + ");
+        JLabel btnArriveeMoins = new JLabel(" - ");
+        btnArriveeMoins.addMouseListener(new ClickPlusMoins(nbArrivee, false, 0.5, 0.5));
+        btnArriveePlus.addMouseListener(new ClickPlusMoins(nbArrivee, true, 0.5, 0.5));
+
+        JPanel panelBoutonsArrivee = new JPanel(new BorderLayout());
+        panelBoutonsArrivee.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+        panelBoutonsArrivee.setBackground(Color.GRAY);
+        panelBoutonsArrivee.add(btnArriveeMoins, BorderLayout.WEST);
+        panelBoutonsArrivee.add(btnArriveePlus, BorderLayout.EAST);
+        JPanel panelCentre = new JPanel();
+        panelCentre.add(nbArrivee);
+        panelCentre.setBackground(Color.LIGHT_GRAY);
+        panelBoutonsArrivee.add(panelCentre, BorderLayout.CENTER);
+
+        this.add(labelArrivee);
+        this.add(panelBoutonsArrivee);
+    }
+
+    private void ajouterLoiTempsTravail() {
+        JLabel labelTempsTravail= new JLabel("Temps de travail (min)  ");
+        tempsTravail = new JLabel("30.0");
+        tempsTravail.setForeground(Color.DARK_GRAY);
+        JLabel btnTempsTravailPlus = new JLabel(" + ");
+        JLabel btnTempsTravailMoins = new JLabel(" - ");
+        btnTempsTravailMoins.addMouseListener(new ClickPlusMoins(tempsTravail, false, 5, 5));
+        btnTempsTravailPlus.addMouseListener(new ClickPlusMoins(tempsTravail, true, 5, 5));
+
+        JPanel panelBoutonsTempsTravail = new JPanel(new BorderLayout());
+        panelBoutonsTempsTravail.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+        panelBoutonsTempsTravail.setBackground(Color.GRAY);
+        panelBoutonsTempsTravail.add(btnTempsTravailMoins, BorderLayout.WEST);
+        panelBoutonsTempsTravail.add(btnTempsTravailPlus, BorderLayout.EAST);
+        JPanel panelCentre = new JPanel();
+        panelCentre.add(tempsTravail);
+        panelCentre.setBackground(Color.LIGHT_GRAY);
+        panelBoutonsTempsTravail.add(panelCentre, BorderLayout.CENTER);
+
+        this.add(labelTempsTravail);
+        this.add(panelBoutonsTempsTravail);
+    }
+
     private void ajouterBtnGo() {
         JButton btnGo = new JButton("Go");
         btnGo.addActionListener(new ActionDemarrer(this));
@@ -111,22 +184,6 @@ public class FenetreParametres extends JFrame {
         btnGo.setForeground(Color.LIGHT_GRAY);
 
         this.add(btnGo);
-    }
-
-    public int getNbAscenseurs() {
-        return Integer.parseInt(this.nbAscenseurs.getText());
-    }
-
-    public int getNbEtages() {
-        return Integer.parseInt(this.nbEtages.getText());
-    }
-
-    public StrategieRalenti getStrategieRalenti() {
-        return (StrategieRalenti) this.strategieRalenti.getSelectedItem();
-    }
-
-    public StrategieService getStrtategieService() {
-        return (StrategieService) this.strategieService.getSelectedItem();
     }
 }
 

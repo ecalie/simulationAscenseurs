@@ -25,6 +25,8 @@ public class ActionDemarrer implements ActionListener {
         int nbAscenseurs = fenetreParametres.getNbAscenseurs();
         Constante.strategieService = fenetreParametres.getStrtategieService();
         Constante.strategieRalenti = fenetreParametres.getStrategieRalenti();
+        Constante.lambda = fenetreParametres.getLoiArrivee() / 6;
+        Constante.tempsTravail = fenetreParametres.getTempsTravail() * 6;
 
         fenetreParametres.setVisible(false);
 
