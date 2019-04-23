@@ -9,7 +9,7 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-public class GestionnaireEvenement {
+public class GestionnaireEvenement extends Thread {
     private Horloge horloge;
     private Queue<Evenement> evenements;
     private DessinBatiment dessinBatiment;
@@ -30,7 +30,8 @@ public class GestionnaireEvenement {
         this.evenements.add(e);
     }
 
-    public void demarrer() {
+    @Override
+    public void run() {
         while (evenements.size() > 0) {
             Evenement e = evenements.poll();
             horloge.avancer(e.getTemps());

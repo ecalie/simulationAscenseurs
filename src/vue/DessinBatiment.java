@@ -20,12 +20,13 @@ public class DessinBatiment extends JFrame {
         this.horloge = horloge;
         this.setVisible(true);
         this.setSize(new Dimension(500, 500));
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.repaint();
     }
 
     @Override
     public void paint(Graphics g) {
+        super.paint(g);
+
         int width = this.getWidth();
         int height = this.getHeight();
 
