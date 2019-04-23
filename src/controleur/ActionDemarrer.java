@@ -26,7 +26,7 @@ public class ActionDemarrer implements ActionListener {
         Constante.strategieService = fenetreParametres.getStrtategieService();
         Constante.strategieRalenti = fenetreParametres.getStrategieRalenti();
 
-//        fenetreParametres.setVisible(false);
+        fenetreParametres.setVisible(false);
 
         Batiment batiment = new Batiment(nbAscenseurs, nbEtages);
 

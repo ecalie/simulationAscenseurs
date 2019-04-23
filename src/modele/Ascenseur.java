@@ -60,13 +60,15 @@ public class Ascenseur {
             // suivre la stratégie de marche au ralentit
             switch (Constante.strategieRalenti) {
                 case inferieur:
-                    traiterRalenti(this.etageCourant - 1, batiment);
+                    if (this.etageCourant > 0)
+                        traiterRalenti(this.etageCourant - 1, batiment);
                     break;
                 case superieur:
-                    traiterRalenti(this.etageCourant + 1, batiment);
+                    if (this.etageCourant < batiment.getEtages().size()-1)
+                        traiterRalenti(this.etageCourant + 1, batiment);
                     break;
                 case milieu:
-                    traiterRalenti(batiment.getEtages().size() / 2 + 1, batiment);
+                    traiterRalenti(batiment.getEtages().size() / 2, batiment);
                     break;
                 case etage1:
                     traiterRalenti(1, batiment);
