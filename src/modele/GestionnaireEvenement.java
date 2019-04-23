@@ -4,6 +4,7 @@ import modele.evenement.ArriveeClient;
 import modele.evenement.Evenement;
 import vue.DessinBatiment;
 import vue.FenetreLogging;
+import vue.GraphiqueTempsAttente;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -43,6 +44,8 @@ public class GestionnaireEvenement extends Thread {
                 e.executer(fenetreLogging);
             dessinBatiment.repaint();
         }
+
+        new GraphiqueTempsAttente();
     }
 
     private boolean contientArrivee() {

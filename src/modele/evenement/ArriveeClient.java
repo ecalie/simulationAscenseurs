@@ -34,6 +34,9 @@ public class ArriveeClient extends Evenement {
         // appeler un ascenseur
         batiment.demanderAscenseur(personne);
 
+        // initialiser l'heure d'arrivée
+        personne.setHeureArrivee(temps);
+
         fenetreLogging.ajouterEvenement(this);
         return genererProchainsEvenements();
     }

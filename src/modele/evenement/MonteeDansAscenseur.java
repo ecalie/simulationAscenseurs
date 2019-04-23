@@ -3,6 +3,7 @@ package modele.evenement;
 import modele.Ascenseur;
 import modele.Batiment;
 import modele.Personne;
+import modele.Statistique;
 import vue.FenetreLogging;
 
 import java.util.ArrayList;
@@ -23,16 +24,26 @@ public class MonteeDansAscenseur extends Evenement {
         boolean nouvellePersonne = false;
         for (Personne p : personnes)
             if (!ascenseur.getPersonnes().contains(p) && p.getNumeroEtageCourant() == ascenseur.getEtageCourant()) {
+                // calculer le temps d'attente et l'enregistrer
+                Statistique.getInstance().ajouterTempsAttente(temps - p.getHeureArrivee());
+
+                // faire monter la personne dans l'ascenseur
                 p.setAscenseur(ascenseur);
                 this.ascenseur.getPersonnes().add(p);
+
+                // afficher l'événement dans la fenetre de logging
                 fenetreLogging.ajouterEvenement(this);
+
+                // enregistrer qu'au moins une personne est montée
                 nouvellePersonne = true;
             }
 
+        // si au moins une personne est montée, recalculer la prochaine destination
         if (nouvellePersonne) {
             ascenseur.choisirProchaineDemande(batiment);
         }
 
+        // aucun événements à générer
         return new ArrayList<>();
     }
 

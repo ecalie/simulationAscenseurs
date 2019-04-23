@@ -1,9 +1,10 @@
 package modele;
 
-public class Personne /* extends Thread */ {
+public class Personne {
     private Ascenseur ascenseur;
     private int numeroEtageCourant;
     private int numeroEtageCible;
+    private int heureArrivee;
 
     public Personne(int nombreEtages) {
         this.ascenseur = null;
@@ -11,6 +12,13 @@ public class Personne /* extends Thread */ {
         this.numeroEtageCible = this.genererEtageCible(nombreEtages);
     }
 
+    public int getHeureArrivee() {
+        return heureArrivee;
+    }
+
+    public void setHeureArrivee(int heureArrivee) {
+        this.heureArrivee = heureArrivee;
+    }
 
     public Ascenseur getAscenseur() {
         return ascenseur;
