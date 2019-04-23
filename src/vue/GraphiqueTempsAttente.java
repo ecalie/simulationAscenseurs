@@ -32,7 +32,7 @@ public class GraphiqueTempsAttente extends JFrame {
                 false, false, false));
         this.add(chartPanel, BorderLayout.SOUTH);
 
-        this.setLocation(200, 0);
+        this.setLocation(0, 200);
         this.pack();
         this.setVisible(true);
     }
