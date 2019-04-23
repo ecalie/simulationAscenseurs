@@ -65,15 +65,19 @@ public class DessinBatiment extends JFrame {
             }
         }
         String heure = horloge.getHeure() + "";
-        char[] data = new char[heure.length() + 4];
+        char[] data = new char[heure.length() + 25];
         data[0] = 't';
         data[1] = ' ';
         data[2] = '=';
         data[3] = ' ';
 
-        for (int i = 4; i < data.length; i++)
-            data[i] = heure.charAt(i - 4);
+        for (int i = 0; i < heure.length(); i++)
+            data[i+4] = heure.charAt(i);
 
-        g.drawChars(data, 0, data.length, width - 50, 45);
+        String tmp = " ticks (1 tick = 10s)";
+        for (int i = 0 ; i < tmp.length() ; i++)
+            data[i+heure.length()+4] = tmp.charAt(i);
+
+        g.drawChars(data, 0, data.length, width - 200, 45);
     }
 }
