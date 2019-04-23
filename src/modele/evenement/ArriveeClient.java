@@ -41,7 +41,7 @@ public class ArriveeClient extends Evenement {
     private List<Evenement> genererProchainsEvenements() {
         int nombreArrivee = prochaineArrivee();
         int tempsProchaineArrivee = temps + 1;
-        while (nombreArrivee == 0) {
+        while (nombreArrivee <= 0) {
             nombreArrivee = prochaineArrivee();
             tempsProchaineArrivee++;
         }
@@ -58,10 +58,10 @@ public class ArriveeClient extends Evenement {
         double u = Math.random();
         int k = 0;
         double p = probabilitePoisson(k);
-        while (p < u) {
-            p += probabilitePoisson(++k);
+        while (u<=p) {
+            p = probabilitePoisson(++k);
         }
-        return k;
+        return k-1;
     }
 
     public double probabilitePoisson(int k) {
