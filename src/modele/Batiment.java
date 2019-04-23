@@ -11,12 +11,12 @@ public class Batiment {
     private GestionnaireEvenement gestionnaireEvenement;
     private Horloge horloge;
 
-    public Batiment(int nombreAscenseurs, int nombreEtages) {
+    public Batiment(int nombreAscenseurs, int nombreEtages, int dureeSimuation) {
         this.etages = new ArrayList<>();
         this.ascenseurs = new ArrayList<>();
         this.personnes = new ArrayList<>();
         this.horloge = new Horloge();
-        this.gestionnaireEvenement = new GestionnaireEvenement(this);
+        this.gestionnaireEvenement = new GestionnaireEvenement(this, dureeSimuation);
 
         for (int i = 0; i < nombreAscenseurs; i++)
             this.ascenseurs.add(new Ascenseur(gestionnaireEvenement));

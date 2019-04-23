@@ -14,10 +14,12 @@ public class GestionnaireEvenement extends Thread {
     private Queue<Evenement> evenements;
     private DessinBatiment dessinBatiment;
     private FenetreLogging fenetreLogging;
+    private int dureeSimulation;
 
-    public GestionnaireEvenement(Batiment batiment) {
+    public GestionnaireEvenement(Batiment batiment, int dureeSimulation) {
         this.horloge = batiment.getHorloge();
         this.dessinBatiment = new DessinBatiment(batiment, horloge);
+        this.dureeSimulation = dureeSimulation;
         this.evenements = new PriorityQueue<>(Comparator.comparingInt(Evenement::getTemps));
         this.fenetreLogging = new FenetreLogging();
     }
@@ -32,7 +34,7 @@ public class GestionnaireEvenement extends Thread {
 
     @Override
     public void run() {
-        while (evenements.size() > 0) {
+        while (horloge.getHeure() <= dureeSimulation) {
             Evenement e = evenements.poll();
             horloge.avancer(e.getTemps());
             if (!(e instanceof ArriveeClient) || !contientArrivee())

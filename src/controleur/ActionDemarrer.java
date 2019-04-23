@@ -27,10 +27,11 @@ public class ActionDemarrer implements ActionListener {
         Constante.strategieRalenti = fenetreParametres.getStrategieRalenti();
         Constante.lambda = fenetreParametres.getLoiArrivee() / 6;
         Constante.tempsTravail = fenetreParametres.getTempsTravail() * 6;
+        int dureeSimualtion = fenetreParametres.getDureeSimulation() * 6;
 
         fenetreParametres.setVisible(false);
 
-        Batiment batiment = new Batiment(nbAscenseurs, nbEtages);
+        Batiment batiment = new Batiment(nbAscenseurs, nbEtages, dureeSimualtion);
 
         // générer le premier événement
         GestionnaireEvenement ge = batiment.getGestionnaireEvenement();

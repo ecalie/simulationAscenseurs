@@ -14,6 +14,7 @@ public class FenetreParametres extends JFrame {
     private JLabel nbEtages;
     private JLabel nbArrivee;
     private JLabel tempsTravail;
+    private JLabel dureeSimulation;
     private JComboBox<StrategieService> strategieService;
     private JComboBox<StrategieRalenti> strategieRalenti;
 
@@ -27,12 +28,13 @@ public class FenetreParametres extends JFrame {
         this.ajouterStrategieRalenti();
         this.ajouterLoiArrivee();
         this.ajouterLoiTempsTravail();
+        this.ajouterDureeSimulation();
 
         this.ajouterBtnGo();
 
         this.getContentPane().setBackground(Color.LIGHT_GRAY);
 
-        this.setSize(new Dimension(270, 270));
+        this.setSize(new Dimension(270, 300));
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -60,6 +62,10 @@ public class FenetreParametres extends JFrame {
 
     public int getTempsTravail(){
         return (int) Double.parseDouble(this.tempsTravail.getText());
+    }
+
+    public int getDureeSimulation() {
+        return (int) Double.parseDouble(this.dureeSimulation.getText());
     }
 
     private void ajouterNbAscenseurs() {
@@ -175,6 +181,29 @@ public class FenetreParametres extends JFrame {
 
         this.add(labelTempsTravail);
         this.add(panelBoutonsTempsTravail);
+    }
+
+    private void ajouterDureeSimulation() {
+        JLabel labelDuree = new JLabel("Durée simulation (min) ");
+        dureeSimulation = new JLabel("20.0");
+        dureeSimulation.setForeground(Color.DARK_GRAY);
+        JLabel btnDureePlus = new JLabel(" + ");
+        JLabel btnDureeMoins = new JLabel(" - ");
+        btnDureeMoins.addMouseListener(new ClickPlusMoins(dureeSimulation, false, 0, 5));
+        btnDureePlus.addMouseListener(new ClickPlusMoins(dureeSimulation, true, 0, 5));
+
+        JPanel panelBoutonsDuree = new JPanel(new BorderLayout());
+        panelBoutonsDuree.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+        panelBoutonsDuree.setBackground(Color.GRAY);
+        panelBoutonsDuree.add(btnDureeMoins, BorderLayout.WEST);
+        panelBoutonsDuree.add(btnDureePlus, BorderLayout.EAST);
+        JPanel panelCentre = new JPanel();
+        panelCentre.add(dureeSimulation);
+        panelCentre.setBackground(Color.LIGHT_GRAY);
+        panelBoutonsDuree.add(panelCentre, BorderLayout.CENTER);
+
+        this.add(labelDuree);
+        this.add(panelBoutonsDuree);
     }
 
     private void ajouterBtnGo() {
