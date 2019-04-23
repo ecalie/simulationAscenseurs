@@ -7,9 +7,11 @@ public class Statistique {
     private static Statistique instance;
 
     private List<Integer> tempsAttentes;
+    private List<Integer> tempsService;
 
     private Statistique() {
         this.tempsAttentes = new ArrayList<>();
+        this.tempsService = new ArrayList<>();
     }
 
     public static Statistique getInstance() {
@@ -22,8 +24,16 @@ public class Statistique {
         return tempsAttentes;
     }
 
+    public List<Integer> getTempsService() {
+        return tempsService;
+    }
+
     public void ajouterTempsAttente(int tempsAttente) {
         this.tempsAttentes.add(tempsAttente);
+    }
+
+    public void ajouterTempsService(int tempsService) {
+        this.tempsService.add(tempsService);
     }
 
     public double calculerTempsAttenteMoyen() {
@@ -34,5 +44,15 @@ public class Statistique {
             tempsAttenteTotal += temps;
 
         return tempsAttenteTotal / nbClients;
+    }
+
+    public double calculerTempsServiceMoyen() {
+        int nbClients = this.tempsService.size();
+        double tempsServivceTotal = 0.0;
+
+        for (int temps : tempsService)
+            tempsServivceTotal += temps;
+
+        return tempsServivceTotal / nbClients;
     }
 }
