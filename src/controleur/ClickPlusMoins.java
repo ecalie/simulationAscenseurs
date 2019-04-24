@@ -11,15 +11,23 @@ public class ClickPlusMoins implements MouseListener {
     private double valeurMin;
     private double increment;
 
-    public ClickPlusMoins(JLabel label, boolean plus, double valeurMin, double increment) {
+    public ClickPlusMoins(JLabel label, double valeurMin, double increment) {
         this.label = label;
-        this.plus = plus;
+        this.plus = false;
         this.valeurMin = valeurMin;
+        this.increment = increment;
+    }
+
+    public ClickPlusMoins(JLabel label, double increment) {
+        this.label = label;
+        this.plus = true;
+        this.valeurMin = 0;
         this.increment = increment;
     }
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
+        // modifier la valeur
         double ancienneValeur = Double.parseDouble(this.label.getText());
         double nouvelleValeur = plus ?
                 (ancienneValeur + increment) :

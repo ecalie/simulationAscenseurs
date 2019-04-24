@@ -60,7 +60,7 @@ public class FenetreParametres extends JFrame {
         return Double.parseDouble(this.nbArrivee.getText());
     }
 
-    public int getTempsTravail(){
+    public int getTempsTravail() {
         return (int) Double.parseDouble(this.tempsTravail.getText());
     }
 
@@ -74,8 +74,8 @@ public class FenetreParametres extends JFrame {
         nbAscenseurs.setForeground(Color.DARK_GRAY);
         JLabel btnAscenseurPlus = new JLabel(" + ");
         JLabel btnAscenseurMoins = new JLabel(" - ");
-        btnAscenseurMoins.addMouseListener(new ClickPlusMoins(nbAscenseurs, false, 1,1));
-        btnAscenseurPlus.addMouseListener(new ClickPlusMoins(nbAscenseurs, true, 1,1));
+        btnAscenseurMoins.addMouseListener(new ClickPlusMoins(nbAscenseurs, 1, 1));
+        btnAscenseurPlus.addMouseListener(new ClickPlusMoins(nbAscenseurs, 1));
 
         JPanel panelBoutonsAscenseur = new JPanel(new BorderLayout());
         panelBoutonsAscenseur.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
@@ -97,8 +97,8 @@ public class FenetreParametres extends JFrame {
         nbEtages.setForeground(Color.DARK_GRAY);
         JLabel btnEtagePlus = new JLabel(" + ");
         JLabel btnEtageMoins = new JLabel(" - ");
-        btnEtageMoins.addMouseListener(new ClickPlusMoins(nbEtages, false, 2,1));
-        btnEtagePlus.addMouseListener(new ClickPlusMoins(nbEtages, true, 2,1));
+        btnEtageMoins.addMouseListener(new ClickPlusMoins(nbEtages, 2, 1));
+        btnEtagePlus.addMouseListener(new ClickPlusMoins(nbEtages, 1));
 
         JPanel panelBoutonsEtages = new JPanel(new BorderLayout());
         panelBoutonsEtages.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
@@ -143,8 +143,8 @@ public class FenetreParametres extends JFrame {
         nbArrivee.setForeground(Color.DARK_GRAY);
         JLabel btnArriveePlus = new JLabel(" + ");
         JLabel btnArriveeMoins = new JLabel(" - ");
-        btnArriveeMoins.addMouseListener(new ClickPlusMoins(nbArrivee, false, 0.5, 0.5));
-        btnArriveePlus.addMouseListener(new ClickPlusMoins(nbArrivee, true, 0.5, 0.5));
+        btnArriveeMoins.addMouseListener(new ClickPlusMoins(nbArrivee, 0.5, 0.5));
+        btnArriveePlus.addMouseListener(new ClickPlusMoins(nbArrivee, 0.5));
 
         JPanel panelBoutonsArrivee = new JPanel(new BorderLayout());
         panelBoutonsArrivee.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
@@ -161,13 +161,13 @@ public class FenetreParametres extends JFrame {
     }
 
     private void ajouterLoiTempsTravail() {
-        JLabel labelTempsTravail= new JLabel("Temps de travail (min)  ");
+        JLabel labelTempsTravail = new JLabel("Temps de travail (min)  ");
         tempsTravail = new JLabel("30.0");
         tempsTravail.setForeground(Color.DARK_GRAY);
         JLabel btnTempsTravailPlus = new JLabel(" + ");
         JLabel btnTempsTravailMoins = new JLabel(" - ");
-        btnTempsTravailMoins.addMouseListener(new ClickPlusMoins(tempsTravail, false, 5, 5));
-        btnTempsTravailPlus.addMouseListener(new ClickPlusMoins(tempsTravail, true, 5, 5));
+        btnTempsTravailMoins.addMouseListener(new ClickPlusMoins(tempsTravail, 10, 5));
+        btnTempsTravailPlus.addMouseListener(new ClickPlusMoins(tempsTravail, 5));
 
         JPanel panelBoutonsTempsTravail = new JPanel(new BorderLayout());
         panelBoutonsTempsTravail.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
@@ -189,8 +189,8 @@ public class FenetreParametres extends JFrame {
         dureeSimulation.setForeground(Color.DARK_GRAY);
         JLabel btnDureePlus = new JLabel(" + ");
         JLabel btnDureeMoins = new JLabel(" - ");
-        btnDureeMoins.addMouseListener(new ClickPlusMoins(dureeSimulation, false, 0, 5));
-        btnDureePlus.addMouseListener(new ClickPlusMoins(dureeSimulation, true, 0, 5));
+        btnDureeMoins.addMouseListener(new ClickPlusMoins(dureeSimulation, 10, 5));
+        btnDureePlus.addMouseListener(new ClickPlusMoins(dureeSimulation, 5));
 
         JPanel panelBoutonsDuree = new JPanel(new BorderLayout());
         panelBoutonsDuree.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
