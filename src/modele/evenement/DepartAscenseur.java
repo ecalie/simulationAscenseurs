@@ -20,8 +20,16 @@ public class DepartAscenseur extends Evenement {
 
     @Override
     public List<Evenement> executer(FenetreLogging fenetreLogging) {
+        // l'ascenseur commence à se déplacer
         this.ascenseur.setEnMouvement(true);
 
+        // modifier le sens de déplacement de l'ascenseur
+        if (ascenseur.getEtageCourant() < etageDestination)
+            ascenseur.setSens(-1);
+        else if (ascenseur.getEtageCourant() > etageDestination)
+            ascenseur.setSens(1);
+
+        // générer l'événemet d'arrivée de l'ascenseur
         List<Evenement> evenements = new ArrayList<>();
         evenements.add(
                 new ArriveeAscenseur(
@@ -29,6 +37,8 @@ public class DepartAscenseur extends Evenement {
                         ascenseur,
                         etageDestination,
                         batiment));
+
+        // afficher l'événement
         fenetreLogging.ajouterEvenement(this);
         return evenements;
     }

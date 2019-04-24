@@ -18,12 +18,17 @@ public class FenetreLogging extends JFrame {
         this.scroll = new JScrollPane(area);
         this.add(scroll);
 
-        this.setSize(400,10);
+        this.setSize(400, 10);
         this.setExtendedState(MAXIMIZED_VERT);
-        this.setLocation(700,0);
+        this.setLocation(700, 0);
         this.setVisible(true);
     }
 
+    /**
+     * Afficher un événemtn dans la fenpete de journalisation.
+     *
+     * @param e L'événement à afficher
+     */
     public void ajouterEvenement(Evenement e) {
         this.area.setText(this.area.getText() + "\n" + e.toString());
         scroll.getVerticalScrollBar().setValue(scroll.getVerticalScrollBar().getMaximum());

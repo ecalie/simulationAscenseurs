@@ -19,22 +19,21 @@ public class ArriveeAscenseur extends Evenement {
 
     @Override
     public List<Evenement> executer(FenetreLogging fenetreLogging) {
-        if (ascenseur.getEtageCourant() < etage)
-            ascenseur.setSens(-1);
-        else if (ascenseur.getEtageCourant() > etage)
-            ascenseur.setSens(1);
-
+        // l'ascenseur arrive à destination
         this.ascenseur.setEtageCourant(etage);
         ascenseur.setEnMouvement(false);
 
+        // générer les événemnts suivants
         List<Evenement> evenements = new ArrayList<>();
+        //      - faire monter les personnes qui attendent dans l'ascenseur
         evenements.add(
                 new MonteeDansAscenseur(
-                        temps+1,
+                        temps + 1,
                         ascenseur,
                         batiment.getPersonnes(),
                         batiment));
 
+        //      - faire descendre les personnes de l'ascenseur s'il y a lieu
         if (!ascenseur.getPersonnes().isEmpty()) {
             evenements.add(
                     new DescenteDeAscenseur(
@@ -42,6 +41,8 @@ public class ArriveeAscenseur extends Evenement {
                             ascenseur,
                             batiment));
         }
+
+        // afficher l'événement
         fenetreLogging.ajouterEvenement(this);
 
         return evenements;

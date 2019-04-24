@@ -18,6 +18,12 @@ public abstract class Evenement {
         return temps;
     }
 
+    /**
+     * Exécuter l'évement.
+     *
+     * @param fenetreLogging Fenetre où sont affichés tous les événements
+     * @return La liste des prochains événements
+     */
     public abstract List<Evenement> executer(FenetreLogging fenetreLogging);
 
 }

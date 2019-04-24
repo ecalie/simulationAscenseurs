@@ -44,6 +44,12 @@ public class Ascenseur {
         return personnes;
     }
 
+    /**
+     * Démarrer le déplacement de l'ascenseur.
+     *
+     * @param etageDestination L'étage de destinatin de l'ascensuer
+     * @param batiment         Le bâtiment dans lequel se déplace l'ascenseur
+     */
     public void traiterDemande(int etageDestination, Batiment batiment) {
         // faire déplacer l'ascenseur
         gestionnaireEvenements.ajouterEvenement(
@@ -55,39 +61,40 @@ public class Ascenseur {
 
     }
 
+    /**
+     * Choisir la prochaine destination
+     * selon les clients qui attendent ou
+     * la politique de marche au ralenti s'il personne n'attend.
+     *
+     * @param batiment Le bâtiment dans lequel se déplace l'ascenseur
+     */
     public synchronized void choisirProchaineDemande(Batiment batiment) {
         if (batiment.getPersonnes().isEmpty()) {
             // suivre la stratégie de marche au ralentit
-            switch (Constante.strategieRalenti) {
-                case inferieur:
-                    if (this.etageCourant > 0)
-                        traiterRalenti(this.etageCourant - 1, batiment);
-                    break;
-                case superieur:
-                    if (this.etageCourant < batiment.getEtages().size()-1)
-                        traiterRalenti(this.etageCourant + 1, batiment);
-                    break;
-                case milieu:
-                    traiterRalenti(batiment.getEtages().size() / 2, batiment);
-                    break;
-                case etage1:
-                    traiterRalenti(1, batiment);
-                    break;
-                default:
-                    // immobile par défaut
-                    break;
-            }
+            traiterRalenti(batiment);
         } else if (personnes.isEmpty()) {
+            // si l'ascenseur est vide, chercher le prochain client à récupérer
+            //      - récupérer la liste des personnes qui attendent
             List<Personne> personnesEnAttente = new ArrayList<>();
             for (Personne p : batiment.getPersonnes())
                 if (p.getAscenseur() == null)
                     personnesEnAttente.add(p);
+            //      - choisir la personne à aller chercher
             choisirDestination(personnesEnAttente, false, batiment);
         } else {
+            // sinon choisir la prochaine personne à déposer
             choisirDestination(personnes, true, batiment);
         }
     }
 
+    /**
+     * Choisir la prochaine destination.
+     *
+     * @param personnes La liste des personnes à satisfaire
+     * @param deposer   Vrai si la destination est celle d'une personne dans l'ascenseur
+     *                  Faux si la destination est celle d'une personne qui attend l'ascenseur
+     * @param batiment  Le bâtiment dans lequel se déplace l'ascenseur
+     */
     private void choisirDestination(List<Personne> personnes, boolean deposer, Batiment batiment) {
         Personne demandeChoisie = null;
         switch (Constante.strategieService) {
@@ -95,6 +102,7 @@ public class Ascenseur {
                 demandeChoisie = personnes.get(0);
                 break;
             case sstf:
+                // chercher la demande la plus proche
                 int distanceMin = 1000;
                 int distance;
                 for (Personne p : personnes) {
@@ -116,11 +124,43 @@ public class Ascenseur {
             traiterDemande(demandeChoisie.getNumeroEtageCourant(), batiment);
     }
 
-    private void traiterRalenti(int etageDestination, Batiment batiment) {
-        gestionnaireEvenements.ajouterEvenement(
-                new DepartAscenseur(
-                        gestionnaireEvenements.getHorloge().getHeure(),
-                        this, etageDestination,
-                        batiment));
+    /**
+     * Chosiir la dsetination selon la politique de marche au ralenti.
+     *
+     * @param batiment
+     */
+    private void traiterRalenti(Batiment batiment) {
+        int etageDestination = -1;
+        boolean bouger = true;
+
+        // choisir l'étage de destination selon la stratégie
+        switch (Constante.strategieRalenti) {
+            case inferieur:
+                if (this.etageCourant > 0)
+                    etageDestination = this.etageCourant - 1;
+                break;
+            case superieur:
+                if (this.etageCourant < batiment.getNombreEtages() - 1)
+                    etageDestination = this.etageCourant + 1;
+                break;
+            case milieu:
+                etageDestination = batiment.getNombreEtages() / 2;
+                break;
+            case etage1:
+                etageDestination = 1;
+                break;
+            default:
+                // immobile par défaut
+                bouger = false;
+                break;
+        }
+
+        // générer l'événement de départ de l'ascenseur s'il doit bouger
+        if (bouger)
+            gestionnaireEvenements.ajouterEvenement(
+                    new DepartAscenseur(
+                            gestionnaireEvenements.getHorloge().getHeure(),
+                            this, etageDestination,
+                            batiment));
     }
 }

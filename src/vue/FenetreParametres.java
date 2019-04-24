@@ -68,6 +68,9 @@ public class FenetreParametres extends JFrame {
         return (int) Double.parseDouble(this.dureeSimulation.getText());
     }
 
+    /**
+     * Afficher le paramètre du nombre d'ascenseurs.
+     */
     private void ajouterNbAscenseurs() {
         JLabel labelAscenseurs = new JLabel("Nombre d'ascenseurs      ");
         nbAscenseurs = new JLabel("1.0");
@@ -91,6 +94,7 @@ public class FenetreParametres extends JFrame {
         this.add(panelBoutonsAscenseur);
     }
 
+    // Afficher le paramètre du nombre d'étages.
     private void ajouterNbEtages() {
         JLabel labelEtages = new JLabel("Nombre d'étages             ");
         nbEtages = new JLabel("4.0");
@@ -114,6 +118,7 @@ public class FenetreParametres extends JFrame {
         this.add(panelBoutonsEtages);
     }
 
+    // Afficher le paramètre de la stratégie de service.
     private void ajouterStrategieService() {
         JLabel labelService = new JLabel("Stratégie de service         ");
         strategieService = new JComboBox<>(StrategieService.values());
@@ -125,6 +130,7 @@ public class FenetreParametres extends JFrame {
         this.add(strategieService);
     }
 
+    // Afficher le paramètre de la stratégie de marche au ralenti.
     private void ajouterStrategieRalenti() {
         JLabel labelRalenti = new JLabel("Stratégie idle           ");
         strategieRalenti = new JComboBox<>(StrategieRalenti.values());
@@ -137,6 +143,7 @@ public class FenetreParametres extends JFrame {
         this.add(strategieRalenti);
     }
 
+    // Afficher le paramètre de la loi d'arrivée des clients.
     private void ajouterLoiArrivee() {
         JLabel labelArrivee = new JLabel("Nombre d'arrivées (/min)");
         nbArrivee = new JLabel("0.5");
@@ -160,6 +167,7 @@ public class FenetreParametres extends JFrame {
         this.add(panelBoutonsArrivee);
     }
 
+    // Afficher le paramètre de la loi de temps de travail des personnes.
     private void ajouterLoiTempsTravail() {
         JLabel labelTempsTravail = new JLabel("Temps de travail (min)  ");
         tempsTravail = new JLabel("30.0");
@@ -183,6 +191,7 @@ public class FenetreParametres extends JFrame {
         this.add(panelBoutonsTempsTravail);
     }
 
+    // Afficher le paramètre de la durée de la simulation.
     private void ajouterDureeSimulation() {
         JLabel labelDuree = new JLabel("Durée simulation (min) ");
         dureeSimulation = new JLabel("20.0");
@@ -206,6 +215,7 @@ public class FenetreParametres extends JFrame {
         this.add(panelBoutonsDuree);
     }
 
+    // Afficher le bouton de démarrage.
     private void ajouterBtnGo() {
         JButton btnGo = new JButton("Go");
         btnGo.addActionListener(new ActionDemarrer(this));

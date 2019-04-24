@@ -13,14 +13,14 @@ public class ActionDemarrer implements ActionListener {
 
     private FenetreParametres fenetreParametres;
 
-
     public ActionDemarrer(FenetreParametres fenetreParametres) {
         this.fenetreParametres = fenetreParametres;
     }
 
-
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
+        // démarer la simulation
+        //       - récupérer les paramètres
         int nbEtages = fenetreParametres.getNbEtages();
         int nbAscenseurs = fenetreParametres.getNbAscenseurs();
         Constante.strategieService = fenetreParametres.getStrtategieService();
@@ -29,13 +29,17 @@ public class ActionDemarrer implements ActionListener {
         Constante.tempsTravail = fenetreParametres.getTempsTravail() * 6;
         int dureeSimualtion = fenetreParametres.getDureeSimulation() * 6;
 
+        //      - masquer la fenetre des paramètres
         fenetreParametres.setVisible(false);
 
+        //      - créer le batiment
         Batiment batiment = new Batiment(nbAscenseurs, nbEtages, dureeSimualtion);
 
-        // générer le premier événement
+        //      - générer le premier événement
         GestionnaireEvenement ge = batiment.getGestionnaireEvenement();
         ge.ajouterEvenement(new ArriveeClient(0, batiment));
+
+        //      - démarer le gestionaire d'événements
         ge.start();
     }
 }

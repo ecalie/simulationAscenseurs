@@ -17,12 +17,15 @@ public class GraphiqueTempsService extends JFrame {
     public GraphiqueTempsService() {
         super("Temps de sevice moyen");
         this.setLayout(new BorderLayout());
+
+        // Afficher le temps de service moyen
         double tempsMoyen = Statistique.getInstance().calculerTempsServiceMoyen();
         double tempsMoyenTronque = ((int) (tempsMoyen * 100)) / 100.0;
         JLabel labelTempsMoyen = new JLabel(tempsMoyenTronque + " ticks");
         labelTempsMoyen.setFont((new Font("Arial", Font.BOLD, 25)));
         this.add(labelTempsMoyen, BorderLayout.NORTH);
 
+        // Afficher tous les temps de service dans un graphique
         ChartPanel chartPanel = new ChartPanel(ChartFactory.createBarChart(
                 "Temps service moyen",
                 "temps",
@@ -32,6 +35,7 @@ public class GraphiqueTempsService extends JFrame {
                 false, false, false));
         this.add(chartPanel, BorderLayout.SOUTH);
 
+        // Afficher la fenêtre
         this.setLocation(700, 200);
         this.pack();
         this.setVisible(true);

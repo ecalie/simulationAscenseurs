@@ -6,13 +6,13 @@ import java.util.List;
 public class Batiment {
 
     private List<Ascenseur> ascenseurs;
-    private List<Etage> etages;
+    private int nombreEtages;
     private List<Personne> personnes;
     private GestionnaireEvenement gestionnaireEvenement;
     private Horloge horloge;
 
     public Batiment(int nombreAscenseurs, int nombreEtages, int dureeSimuation) {
-        this.etages = new ArrayList<>();
+        this.nombreEtages = nombreEtages;
         this.ascenseurs = new ArrayList<>();
         this.personnes = new ArrayList<>();
         this.horloge = new Horloge();
@@ -20,9 +20,6 @@ public class Batiment {
 
         for (int i = 0; i < nombreAscenseurs; i++)
             this.ascenseurs.add(new Ascenseur(gestionnaireEvenement));
-
-        for (int i = 0; i < nombreEtages; i++)
-            this.etages.add(new Etage(i));
     }
 
     public GestionnaireEvenement getGestionnaireEvenement() {
@@ -37,12 +34,12 @@ public class Batiment {
         return ascenseurs;
     }
 
-    public List<Etage> getEtages() {
-        return etages;
-    }
-
     public List<Personne> getPersonnes() {
         return personnes;
+    }
+
+    public int getNombreEtages() {
+        return nombreEtages;
     }
 
     public void ajouterPersonne(Personne p) {
@@ -53,6 +50,11 @@ public class Batiment {
         this.personnes.remove(p);
     }
 
+    /**
+     * Répondre à une demande d'une personne qui attend l'ascenseur.
+     *
+     * @param personne La personne qui attend l'ascenseur
+     */
     public void demanderAscenseur(Personne personne) {
         // trouver l'acenseur non occupé le plus proche
         int distanceMin = 1000;
@@ -68,6 +70,7 @@ public class Batiment {
             }
         }
 
+        // si un ascensuer est disponible, traiter la demande
         if (ascenseurDisponible != null)
             ascenseurDisponible.traiterDemande(personne.getNumeroEtageCourant(), this);
     }

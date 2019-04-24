@@ -22,7 +22,7 @@ public class DescenteDeAscenseur extends Evenement {
         List<Evenement> evenements = new ArrayList<>();
         int i = 0;
         // pour toutes les personnes dans l'ascenseur
-        while ( i < ascenseur.getPersonnes().size()) {
+        while (i < ascenseur.getPersonnes().size()) {
             Personne p = ascenseur.getPersonnes().get(i);
 
             // si l'ascenseur est arrivé à l'étage souhaité par la personne

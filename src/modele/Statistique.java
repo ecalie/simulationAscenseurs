@@ -36,6 +36,11 @@ public class Statistique {
         this.tempsService.add(tempsService);
     }
 
+    /**
+     * Calculer le temps d'attente moyen de toutes les personnes.
+     *
+     * @return Le temps d'attente moyen
+     */
     public double calculerTempsAttenteMoyen() {
         int nbClients = this.tempsAttentes.size();
         double tempsAttenteTotal = 0.0;
@@ -46,6 +51,11 @@ public class Statistique {
         return tempsAttenteTotal / nbClients;
     }
 
+    /**
+     * Calculer le temps de service moyen.
+     *
+     * @return Le temps de service moyen
+     */
     public double calculerTempsServiceMoyen() {
         int nbClients = this.tempsService.size();
         double tempsServivceTotal = 0.0;

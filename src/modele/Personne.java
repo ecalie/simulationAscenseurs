@@ -44,11 +44,22 @@ public class Personne {
         this.numeroEtageCible = numeroEtageCible;
     }
 
+    /**
+     * Calculer le temps de travail de la personne (avant qu'elle ne redemande un ascenseur).
+     *
+     * @return Le temps de travail
+     */
     public int calculerTempsTravail() {
         double u = Math.random();
         return (int) (-Math.log(1 - u) * Constante.tempsTravail);
     }
 
+    /**
+     * Générer aléatoirement l'étage de destination de la personne.
+     *
+     * @param nombreEtages Nombre d'étages dans le bâtiment
+     * @return L'étage de destination de la personne (différent de 1 : l'étage de départ)
+     */
     private int genererEtageCible(int nombreEtages) {
         int etageDestination = (int) (Math.random() * nombreEtages);
         while (etageDestination == 1)

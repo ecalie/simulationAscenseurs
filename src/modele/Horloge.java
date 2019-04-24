@@ -12,6 +12,11 @@ public class Horloge {
         return heure;
     }
 
+    /**
+     * Faire avanncer l'horloge.
+     *
+     * @param temps Le temps du prochain événement
+     */
     public void avancer(int temps) {
         if (heure != temps) {
             this.heure = temps;

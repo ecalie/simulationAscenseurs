@@ -13,7 +13,7 @@ public class ArriveeClient extends Evenement {
 
     public ArriveeClient(int temps, Batiment batiment) {
         super(temps, batiment);
-        this.personne = new Personne(batiment.getEtages().size());
+        this.personne = new Personne(batiment.getNombreEtages());
     }
 
     public ArriveeClient(int temps, Batiment batiment, Personne personne) {
@@ -37,18 +37,29 @@ public class ArriveeClient extends Evenement {
         // initialiser l'heure d'arrivée
         personne.setHeureArrivee(temps);
 
+        // afficher l'événement
         fenetreLogging.ajouterEvenement(this);
+
+        // générer la prochaine arrivée
         return genererProchainsEvenements();
     }
 
+    /**
+     * Générer l'arrivée du prochain client.
+     *
+     * @return Les événements d'arrivée des prochains clients
+     */
     private List<Evenement> genererProchainsEvenements() {
-        int nombreArrivee = prochaineArrivee();
+        // trouver le temps de la prochaine arrivée
+        // selon la loi de probabilité
+        int nombreArrivee = nombreArriveesTempsSuivant();
         int tempsProchaineArrivee = temps + 1;
         while (nombreArrivee <= 0) {
-            nombreArrivee = prochaineArrivee();
+            nombreArrivee = nombreArriveesTempsSuivant();
             tempsProchaineArrivee++;
         }
 
+        // créer les événements
         List<Evenement> prochainesArrivees = new ArrayList<>();
         for (int i = 0; i < nombreArrivee; i++) {
             prochainesArrivees.add(new ArriveeClient(tempsProchaineArrivee, batiment));
@@ -57,20 +68,37 @@ public class ArriveeClient extends Evenement {
         return prochainesArrivees;
     }
 
-    public int prochaineArrivee() {
+    /**
+     * Caculer le nombre d'arrivées au prochain tick.
+     *
+     * @return Le nombre d'arrivées au prochain tick (potentiellement 0)
+     */
+    public int nombreArriveesTempsSuivant() {
         double u = Math.random();
         int k = 0;
         double p = probabilitePoisson(k);
-        while (u<=p) {
+        while (u <= p) {
             p = probabilitePoisson(++k);
         }
-        return k-1;
+        return k - 1;
     }
 
+    /**
+     * Calculer la probabilité que k personnes arrivent.
+     *
+     * @param k Nombre de personne qui arrivent
+     * @return La probabilité que k personnes arrivent
+     */
     public double probabilitePoisson(int k) {
         return Math.pow(Constante.lambda, k) * Math.exp(-Constante.lambda) / factorielle(k);
     }
 
+    /**
+     * Calculer la factorielle d'un nombre.
+     *
+     * @param k Le paramètre de la fonction factorielle
+     * @return Factorielle k = k*(k-1)*...*2*1
+     */
     public double factorielle(int k) {
         if (k == 0)
             return 1;

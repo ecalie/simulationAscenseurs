@@ -31,7 +31,7 @@ public class ClickPlusMoins implements MouseListener {
         double ancienneValeur = Double.parseDouble(this.label.getText());
         double nouvelleValeur = plus ?
                 (ancienneValeur + increment) :
-                (ancienneValeur == valeurMin)?valeurMin:(ancienneValeur - increment);
+                (ancienneValeur == valeurMin) ? valeurMin : (ancienneValeur - increment);
         this.label.setText(nouvelleValeur + "");
     }
 
