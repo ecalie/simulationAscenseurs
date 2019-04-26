@@ -22,15 +22,10 @@ public class DessinAscenseur {
     }
 
     public void dessiner(Graphics g) {
-        if (ascenseur.isEnMouvement())
-            g.setColor(Color.RED);
-
         g.drawRect(abscisse,
                 ordonnee - hauteur,
                 longueur,
                 hauteur);
-
-        g.setColor(Color.BLACK);
 
         int decalage = 15;
         for (Personne p : ascenseur.getPersonnes()) {

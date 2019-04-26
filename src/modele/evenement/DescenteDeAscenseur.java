@@ -4,22 +4,34 @@ import modele.Ascenseur;
 import modele.Batiment;
 import modele.Personne;
 import modele.Statistique;
-import vue.FenetreLogging;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DescenteDeAscenseur extends Evenement {
     private Ascenseur ascenseur;
+    private int nbDescentes;
 
     public DescenteDeAscenseur(int temps, Ascenseur ascenseur, Batiment batiment) {
-        super(temps, batiment);
+        super(temps, batiment,  2);
         this.ascenseur = ascenseur;
+        this.nbDescentes = 0;
     }
 
     @Override
-    public List<Evenement> executer(FenetreLogging fenetreLogging) {
+    public boolean precondition() {
+        return ascenseur.getSens() == 0;
+    }
+
+    @Override
+    public boolean postcondition() {
+        return nbDescentes > 0;
+    }
+
+    @Override
+    public List<Evenement> executer() {
         List<Evenement> evenements = new ArrayList<>();
+        nbDescentes = 0;
         int i = 0;
         // pour toutes les personnes dans l'ascenseur
         while (i < ascenseur.getPersonnes().size()) {
@@ -31,12 +43,10 @@ public class DescenteDeAscenseur extends Evenement {
                 p.setAscenseur(null);
                 this.ascenseur.getPersonnes().remove(p);
                 batiment.supprimerPersonne(p);
+                this.nbDescentes++;
 
                 // ajouter le temps de sercvice dans les statistiques
                 Statistique.getInstance().ajouterTempsService(temps - p.getHeureArrivee());
-
-                // afficher l'événement dans le logging
-                fenetreLogging.ajouterEvenement(this);
 
                 // générer l'événement correspondant au retour de la personne (après le temps de travail) s'il y a lieu
                 if (p.getNumeroEtageCible() != 1) {
@@ -58,7 +68,7 @@ public class DescenteDeAscenseur extends Evenement {
     }
 
     @Override
-    public String toString() {
-        return "une personne descend à l'étage " + ascenseur.getEtageCourant() + " au temps " + temps;
+    public String decrire() {
+        return nbDescentes + (nbDescentes == 1 ? " personne descend" : " personnes descendent") + " à l'étage " + ascenseur.getEtageCourant();
     }
 }

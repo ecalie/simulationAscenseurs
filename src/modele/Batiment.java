@@ -10,6 +10,7 @@ public class Batiment {
     private List<Personne> personnes;
     private GestionnaireEvenement gestionnaireEvenement;
     private Horloge horloge;
+    private List<Integer> ascenseursParEtages;
 
     public Batiment(int nombreAscenseurs, int nombreEtages, int dureeSimuation) {
         this.nombreEtages = nombreEtages;
@@ -20,6 +21,11 @@ public class Batiment {
 
         for (int i = 0; i < nombreAscenseurs; i++)
             this.ascenseurs.add(new Ascenseur(gestionnaireEvenement));
+
+        this.ascenseursParEtages = new ArrayList<>();
+        for (int i = 0; i < nombreEtages; i++)
+            ascenseursParEtages.add(0);
+        ascenseursParEtages.set(1, 2);
     }
 
     public GestionnaireEvenement getGestionnaireEvenement() {
@@ -28,6 +34,10 @@ public class Batiment {
 
     public Horloge getHorloge() {
         return horloge;
+    }
+
+    public List<Integer> getAscenseursParEtages() {
+        return ascenseursParEtages;
     }
 
     public List<Ascenseur> getAscenseurs() {
@@ -61,7 +71,7 @@ public class Batiment {
         Ascenseur ascenseurDisponible = null;
         int distance;
         for (Ascenseur a : ascenseurs) {
-            if (!a.isEnMouvement()) {
+            if (!a.isOccupe()/* && a.getPersonnes().isEmpty()*/) {
                 distance = Math.abs(a.getEtageCourant() - personne.getNumeroEtageCourant());
                 if (distance < distanceMin) {
                     distanceMin = distance;

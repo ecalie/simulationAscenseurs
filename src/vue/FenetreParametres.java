@@ -73,7 +73,7 @@ public class FenetreParametres extends JFrame {
      */
     private void ajouterNbAscenseurs() {
         JLabel labelAscenseurs = new JLabel("Nombre d'ascenseurs      ");
-        nbAscenseurs = new JLabel("1.0");
+        nbAscenseurs = new JLabel("2.0");
         nbAscenseurs.setForeground(Color.DARK_GRAY);
         JLabel btnAscenseurPlus = new JLabel(" + ");
         JLabel btnAscenseurMoins = new JLabel(" - ");
@@ -97,7 +97,7 @@ public class FenetreParametres extends JFrame {
     // Afficher le paramètre du nombre d'étages.
     private void ajouterNbEtages() {
         JLabel labelEtages = new JLabel("Nombre d'étages             ");
-        nbEtages = new JLabel("4.0");
+        nbEtages = new JLabel("7.0");
         nbEtages.setForeground(Color.DARK_GRAY);
         JLabel btnEtagePlus = new JLabel(" + ");
         JLabel btnEtageMoins = new JLabel(" - ");
@@ -194,7 +194,7 @@ public class FenetreParametres extends JFrame {
     // Afficher le paramètre de la durée de la simulation.
     private void ajouterDureeSimulation() {
         JLabel labelDuree = new JLabel("Durée simulation (min) ");
-        dureeSimulation = new JLabel("20.0");
+        dureeSimulation = new JLabel("10.0");
         dureeSimulation.setForeground(Color.DARK_GRAY);
         JLabel btnDureePlus = new JLabel(" + ");
         JLabel btnDureeMoins = new JLabel(" - ");

@@ -3,7 +3,6 @@ package modele.evenement;
 import modele.Batiment;
 import modele.Constante;
 import modele.Personne;
-import vue.FenetreLogging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +11,12 @@ public class ArriveeClient extends Evenement {
     private Personne personne;
 
     public ArriveeClient(int temps, Batiment batiment) {
-        super(temps, batiment);
+        super(temps, batiment, 5);
         this.personne = new Personne(batiment.getNombreEtages());
     }
 
     public ArriveeClient(int temps, Batiment batiment, Personne personne) {
-        super(temps, batiment);
+        super(temps, batiment,  5);
         this.batiment = batiment;
         this.personne = personne;
     }
@@ -27,7 +26,17 @@ public class ArriveeClient extends Evenement {
     }
 
     @Override
-    public List<Evenement> executer(FenetreLogging fenetreLogging) {
+    public boolean precondition() {
+        return true;
+    }
+
+    @Override
+    public boolean postcondition() {
+        return true;
+    }
+
+    @Override
+    public List<Evenement> executer() {
         // ajouter la personne dans le batiment
         batiment.ajouterPersonne(personne);
 
@@ -36,9 +45,6 @@ public class ArriveeClient extends Evenement {
 
         // initialiser l'heure d'arrivée
         personne.setHeureArrivee(temps);
-
-        // afficher l'événement
-        fenetreLogging.ajouterEvenement(this);
 
         // générer la prochaine arrivée
         return genererProchainsEvenements();
@@ -107,7 +113,7 @@ public class ArriveeClient extends Evenement {
     }
 
     @Override
-    public String toString() {
-        return "un client arrive à l'étage " + personne.getNumeroEtageCourant() + " au temps " + temps;
+    public String decrire() {
+        return "un client arrive à l'étage " + personne.getNumeroEtageCourant();
     }
 }

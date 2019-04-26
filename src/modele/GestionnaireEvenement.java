@@ -7,7 +7,6 @@ import vue.FenetreLogging;
 import vue.GraphiqueTempsAttente;
 import vue.GraphiqueTempsService;
 
-import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -22,7 +21,12 @@ public class GestionnaireEvenement extends Thread {
         this.horloge = batiment.getHorloge();
         this.dessinBatiment = new DessinBatiment(batiment, horloge);
         this.dureeSimulation = dureeSimulation;
-        this.evenements = new PriorityQueue<>(Comparator.comparingInt(Evenement::getTemps));
+        this.evenements = new PriorityQueue<>((t0, t1) -> {
+            if (t0.getTemps() != t1.getTemps())
+                return t0.getTemps() - t1.getTemps();
+            else
+                return t0.getPriorite() - t1.getPriorite();
+        });
         this.fenetreLogging = new FenetreLogging();
     }
 
