@@ -41,8 +41,11 @@ public class DescenteDeAscenseur extends Evenement {
             if (p.getNumeroEtageCible() == ascenseur.getEtageCourant()) {
                 // faire descendre la personnes de l'ascenseur
                 p.setAscenseur(null);
+
                 this.ascenseur.getPersonnes().remove(p);
-                batiment.supprimerPersonne(p);
+                synchronized (batiment.getPersonnes()) {
+                    batiment.supprimerPersonne(p);
+                }
                 this.nbDescentes++;
 
                 // ajouter le temps de sercvice dans les statistiques

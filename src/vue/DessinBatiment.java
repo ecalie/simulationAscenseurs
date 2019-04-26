@@ -58,13 +58,15 @@ public class DessinBatiment extends JFrame {
         for (int i = 0; i < batiment.getNombreEtages(); i++)
             abscissesPersonnes.add(batiment.getAscenseurs().size() * width / 8 + 40);
 
-        for (Personne p : batiment.getPersonnes()) {
-            if (p.getAscenseur() == null) {
-                new DessinPersonne(
-                        abscissesPersonnes.get(p.getNumeroEtageCourant()),
-                        (height - 50) - (height - 50) * p.getNumeroEtageCourant() / batiment.getNombreEtages() + 25
-                ).dessiner(g);
-                abscissesPersonnes.set(p.getNumeroEtageCourant(), abscissesPersonnes.get(p.getNumeroEtageCourant()) + 15);
+        synchronized (batiment.getPersonnes()) {
+            for (Personne p : batiment.getPersonnes()) {
+                if (p.getAscenseur() == null) {
+                    new DessinPersonne(
+                            abscissesPersonnes.get(p.getNumeroEtageCourant()),
+                            (height - 50) - (height - 50) * p.getNumeroEtageCourant() / batiment.getNombreEtages() + 25
+                    ).dessiner(g);
+                    abscissesPersonnes.set(p.getNumeroEtageCourant(), abscissesPersonnes.get(p.getNumeroEtageCourant()) + 15);
+                }
             }
         }
 
