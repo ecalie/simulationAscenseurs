@@ -4,8 +4,7 @@ import modele.evenement.ArriveeClient;
 import modele.evenement.Evenement;
 import vue.DessinBatiment;
 import vue.FenetreLogging;
-import vue.GraphiqueTempsAttente;
-import vue.GraphiqueTempsService;
+import vue.GraphiqueStatistique;
 
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -61,8 +60,7 @@ public class GestionnaireEvenement extends Thread {
         }
 
         // afficher les statistiques à la fin de la simulation
-        new GraphiqueTempsAttente();
-        new GraphiqueTempsService();
+        new GraphiqueStatistique();
     }
 
     /**
