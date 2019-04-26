@@ -22,7 +22,7 @@ public class MonteeDansAscenseur extends Evenement {
 
     @Override
     public boolean precondition() {
-        return ascenseur.getSens() == 0;
+        return ascenseur.isArrete();
     }
 
     @Override
@@ -35,7 +35,7 @@ public class MonteeDansAscenseur extends Evenement {
         boolean nouvellePersonne = false;
         nbMontees = 0;
         for (Personne p : personnes)
-            if (ascenseur.getSens() == 0 && p.getAscenseur() == null && p.getNumeroEtageCourant() == ascenseur.getEtageCourant()) {
+            if (p.getAscenseur() == null && p.getNumeroEtageCourant() == ascenseur.getEtageCourant()) {
                 // calculer le temps d'attente et l'enregistrer
                 Statistique.getInstance().ajouterTempsAttente(temps - p.getHeureArrivee());
 

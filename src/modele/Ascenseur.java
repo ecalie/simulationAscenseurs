@@ -12,6 +12,7 @@ public class Ascenseur {
     private List<Personne> personnes;
     private GestionnaireEvenement gestionnaireEvenements;
     private boolean occupe;
+    private boolean arrete;
 
     public Ascenseur(GestionnaireEvenement gestionnaireEvenements) {
         this.etageCourant = 1;
@@ -19,6 +20,15 @@ public class Ascenseur {
         this.gestionnaireEvenements = gestionnaireEvenements;
         this.personnes = new ArrayList<>();
         this.occupe = false;
+        this.arrete = true;
+    }
+
+    public boolean isArrete() {
+        return arrete;
+    }
+
+    public void setArrete(boolean arrete) {
+        this.arrete = arrete;
     }
 
     public boolean isOccupe() {
@@ -31,10 +41,6 @@ public class Ascenseur {
 
     public void setSens(int sens) {
         this.sens = sens;
-    }
-
-    public int getSens() {
-        return sens;
     }
 
     public int getEtageCourant() {
@@ -92,16 +98,19 @@ public class Ascenseur {
             if (p.getAscenseur() == null)
                 personnesEnAttente.add(p);
 
+
         if (personnesEnAttente.isEmpty() && personnes.isEmpty()) {
             // si l'ascenseur est vide est personne n'attend d'ascenseur
             // suivre la stratégie de marche au ralentit
             traiterRalenti(batiment);
-        } else if (personnes.isEmpty()) {
-            // si l'ascenseur est vide, chercher le prochain client à récupérer
-            choisirDestination(personnesEnAttente, false, batiment);
         } else {
-            // sinon choisir la prochaine personne à déposer
-            choisirDestination(personnes, true, batiment);
+            if (personnes.isEmpty())
+                // si l'ascenseur est vide, chercher le prochain client à récupérer
+                choisirDestination(personnesEnAttente, false, batiment);
+            else if (Constante.strategieService == StrategieService.scan)
+                choisirDestination(personnes, personnesEnAttente, batiment, true, sens==1);
+            else
+                choisirDestination(personnes, true, batiment);
         }
     }
 
@@ -142,8 +151,6 @@ public class Ascenseur {
                     }
                 }
                 break;
-            case scan:
-                // TODO
         }
 
         if (demandeChoisie != null)
@@ -155,12 +162,51 @@ public class Ascenseur {
             traiterRalenti(batiment);
     }
 
+    private void choisirDestination(List<Personne> personnesADeposer,
+                                    List<Personne> personnesARecuperer,
+                                    Batiment batiment,
+                                    boolean premierPassage,
+                                    boolean incrementer) {
+        int etage = etageCourant;
+
+        boolean trouve = false;
+        while (!trouve && etage >= 0 && etage < batiment.getNombreEtages()) {
+            for (Personne p : personnesADeposer)
+                if (p.getNumeroEtageCible() == etage) {
+                    trouve = true;
+                    traiterDemande(p.getNumeroEtageCible(), batiment);
+                    break;
+                }
+
+            if (!trouve)
+                for (Personne p : personnesARecuperer)
+                    if (p.getNumeroEtageCourant() == etage) {
+                        trouve = true;
+                        traiterDemande(p.getNumeroEtageCourant(), batiment);
+                        break;
+                    }
+
+            if (incrementer)
+                etage++;
+            else
+                etage--;
+        }
+
+        if (!trouve)
+            if (premierPassage) {
+                choisirDestination(personnesADeposer, personnesARecuperer, batiment, false, !incrementer);
+            } else {
+                traiterRalenti(batiment);
+            }
+    }
+
     /**
      * Choisir la destination selon la politique de marche au ralenti.
      *
      * @param batiment
      */
     private void traiterRalenti(Batiment batiment) {
+        this.sens = 0;
         int etageDestination = -1;
         boolean bouger = true;
 

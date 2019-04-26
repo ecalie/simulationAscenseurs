@@ -29,7 +29,7 @@ public class ArriveeAscenseur extends Evenement {
     @Override
     public List<Evenement> executer() {
         // l'ascenseur arrive à destination
-        this.ascenseur.setSens(0);
+        this.ascenseur.setArrete(true);
 
         if (ascenseur.getPersonnes().isEmpty())
             ascenseur.setOccupe(false);

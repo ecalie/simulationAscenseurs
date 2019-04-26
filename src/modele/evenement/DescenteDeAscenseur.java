@@ -20,7 +20,7 @@ public class DescenteDeAscenseur extends Evenement {
 
     @Override
     public boolean precondition() {
-        return ascenseur.getSens() == 0;
+        return ascenseur.isArrete();
     }
 
     @Override

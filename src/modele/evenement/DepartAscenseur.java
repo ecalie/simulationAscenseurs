@@ -20,7 +20,7 @@ public class DepartAscenseur extends Evenement {
 
     @Override
     public boolean precondition() {
-        return ascenseur.getSens() == 0 && ascenseur.getEtageCourant() != etageDestination;
+        return ascenseur.isArrete() && ascenseur.getEtageCourant() != etageDestination;
     }
 
     @Override
@@ -35,9 +35,9 @@ public class DepartAscenseur extends Evenement {
 
         // modifier le sens de déplacement de l'ascenseur
         if (ascenseur.getEtageCourant() < etageDestination)
-            ascenseur.setSens(-1);
-        else
             ascenseur.setSens(1);
+        else
+            ascenseur.setSens(-1);
         this.etageDepart = this.ascenseur.getEtageCourant();
         this.ascenseur.setEtageCourant(etageDestination);
 
