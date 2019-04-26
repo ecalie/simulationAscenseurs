@@ -58,12 +58,19 @@ public class GraphiqueStatistique extends JFrame {
         List<Integer> tempsAttente = new ArrayList<>();
         List<Integer> tempsService = new ArrayList<>();
 
-        int max = 20;
+        // chercher la valeur maximale
+        int max = 0;
+        for (int i : Statistique.getInstance().getTempsAttentes())
+            if (i > max)
+                max = i;
+        for (int i : Statistique.getInstance().getTempsService())
+            if (i > max)
+                max = i;
 
         // initialiser les listes
-        for (int i = 0; i < max; i++)
+        for (int i = 0; i <= max; i++)
             tempsAttente.add(0);
-        for (int i = 0; i < max; i++)
+        for (int i = 0; i <= max; i++)
             tempsService.add(0);
 
         // remplir les listes avec les données
@@ -73,7 +80,7 @@ public class GraphiqueStatistique extends JFrame {
             tempsService.set(i, tempsService.get(i) + 1);
 
         // ajouter les données au dataset
-        for (int i = 0; i < max; i++) {
+        for (int i = 0; i <= max; i++) {
             dataset.addValue(tempsAttente.get(i), "attente", i + "");
             dataset.addValue(tempsService.get(i), "service", i + "");
         }
