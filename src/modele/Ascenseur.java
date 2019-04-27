@@ -98,18 +98,19 @@ public class Ascenseur {
             if (p.getAscenseur() == null)
                 personnesEnAttente.add(p);
 
-
         if (personnesEnAttente.isEmpty() && personnes.isEmpty()) {
             // si l'ascenseur est vide est personne n'attend d'ascenseur
             // suivre la stratégie de marche au ralentit
             traiterRalenti(batiment);
         } else {
             if (personnes.isEmpty())
-                // si l'ascenseur est vide, chercher le prochain client à récupérer
+                // si l'ascenseur est vide, chercher parmi la liste des personnes qui attendent l'ascenseur
                 choisirDestination(personnesEnAttente, false, batiment);
             else if (Constante.strategieService == StrategieService.scan)
-                choisirDestination(personnes, personnesEnAttente, batiment, true, sens==1);
+                // sinon si la stratégie est scan, chercher parmi les deux listes
+                choisirDestination(personnes, personnesEnAttente, batiment, true, sens == 1);
             else
+                // sinon choisir parmi les personnes dans l'ascenseur
                 choisirDestination(personnes, true, batiment);
         }
     }
@@ -126,6 +127,7 @@ public class Ascenseur {
         Personne demandeChoisie = null;
         switch (Constante.strategieService) {
             case fcfs:
+                // prendre la première demande qui n'est pas en cours de traitement
                 for (Personne p : personnes) {
                     if (this.personnes.contains(p) || batiment.getAscenseursParEtages().get(p.getNumeroEtageCourant()) == 0) {
                         demandeChoisie = p;
@@ -154,14 +156,28 @@ public class Ascenseur {
         }
 
         if (demandeChoisie != null)
+            // si toutes les traitements ne sont pas déjà en cours de traitement, traiter la demande choisie
             if (deposer)
                 traiterDemande(demandeChoisie.getNumeroEtageCible(), batiment);
             else
                 traiterDemande(demandeChoisie.getNumeroEtageCourant(), batiment);
+        // sinon suivre le politique de marche au ralenti
         else
             traiterRalenti(batiment);
     }
 
+    /**
+     * Choisir la destination parmi la liste des personnes dans l'ascenseur et la liste des pesonnes qui attendent l'ascenseur.
+     * Seulement dans le cas de Linear Scan
+     *
+     * @param personnesADeposer La liste des personnes dans l'ascenseur
+     * @param personnesARecuperer La liste des personnes qui attendent l'ascenseur
+     * @param batiment Le bâtiment
+     * @param premierPassage Vrai si la fonction est exécutée pour la première fois
+     *                       Faux sinon (deuxième exécution dans l'autre sens de déplacement si aucun demande trouvée dans le sens actuel de déplacement)
+     * @param incrementer Vrai si l'ascenseur se déplace vers le haut du bâtiment
+     *                    Faux sinon
+     */
     private void choisirDestination(List<Personne> personnesADeposer,
                                     List<Personne> personnesARecuperer,
                                     Batiment batiment,
@@ -170,7 +186,9 @@ public class Ascenseur {
         int etage = etageCourant;
 
         boolean trouve = false;
+        // Tant qu'on a pas trouvé de demande à traiter et qu'il reste des étages
         while (!trouve && etage >= 0 && etage < batiment.getNombreEtages()) {
+            // chercher une demande parmi les personnes dans l'ascenseur
             for (Personne p : personnesADeposer)
                 if (p.getNumeroEtageCible() == etage) {
                     trouve = true;
@@ -178,6 +196,7 @@ public class Ascenseur {
                     break;
                 }
 
+            // si personne ne descend à l'étage courant, regarder si quelqu'un attend l'ascenseur
             if (!trouve)
                 for (Personne p : personnesARecuperer)
                     if (p.getNumeroEtageCourant() == etage) {
@@ -186,12 +205,14 @@ public class Ascenseur {
                         break;
                     }
 
+                    // passer à l'étage suivant
             if (incrementer)
                 etage++;
             else
                 etage--;
         }
 
+        // si aucune demande trouvée, on change le sens de déplacement et recommence
         if (!trouve)
             if (premierPassage) {
                 choisirDestination(personnesADeposer, personnesARecuperer, batiment, false, !incrementer);

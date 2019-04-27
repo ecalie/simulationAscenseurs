@@ -25,8 +25,16 @@ public abstract class Evenement {
         return priorite;
     }
 
+    /**
+     * Condition qui doit être vérifiée arpès l'exécution de l'événement.
+     * @return La condition
+     */
     public abstract boolean postcondition();
 
+    /**
+     * Condition qui doit être vérifiée pour exécuter l'événement.
+     * @return La condition
+     */
     public abstract boolean precondition();
 
     /**
@@ -46,8 +54,16 @@ public abstract class Evenement {
         return new ArrayList<>();
     }
 
+    /**
+     * Traiter l'événement et générer les prochains événements.
+     * @return La liste des prochains événements
+     */
     public abstract List<Evenement> executer();
 
+    /**
+     * Décrire l'événement.
+     * @return Un chaîne de caractère décrivant l'événement
+     */
     protected abstract String decrire();
 
     @Override
