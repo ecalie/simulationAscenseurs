@@ -28,12 +28,14 @@ public class DessinAscenseur {
                 hauteur);
 
         int decalage = 15;
-        for (Personne p : ascenseur.getPersonnes()) {
-            new DessinPersonne(
-                    abscisse + decalage,
-                    ordonnee
-            ).dessiner(g);
-            decalage += 15;
+        synchronized(ascenseur.getPersonnes()) {
+            for (Personne p : ascenseur.getPersonnes()) {
+                new DessinPersonne(
+                        abscisse + decalage,
+                        ordonnee
+                ).dessiner(g);
+                decalage += 15;
+            }
         }
     }
 }

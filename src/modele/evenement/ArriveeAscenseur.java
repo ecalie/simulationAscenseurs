@@ -58,6 +58,6 @@ public class ArriveeAscenseur extends Evenement {
 
     @Override
     public String decrire() {
-        return "un ascenseur arrive à l'étage " + etage + "   " + ascenseur;
+        return "un ascenseur arrive à l'étage " + etage;
     }
 }

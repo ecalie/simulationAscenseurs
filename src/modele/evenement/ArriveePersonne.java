@@ -7,15 +7,15 @@ import modele.Personne;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArriveeClient extends Evenement {
+public class ArriveePersonne extends Evenement {
     private Personne personne;
 
-    public ArriveeClient(int temps, Batiment batiment) {
+    public ArriveePersonne(int temps, Batiment batiment) {
         super(temps, batiment, 5);
         this.personne = new Personne(batiment.getNombreEtages());
     }
 
-    public ArriveeClient(int temps, Batiment batiment, Personne personne) {
+    public ArriveePersonne(int temps, Batiment batiment, Personne personne) {
         super(temps, batiment,  5);
         this.batiment = batiment;
         this.personne = personne;
@@ -70,7 +70,7 @@ public class ArriveeClient extends Evenement {
         // créer les événements
         List<Evenement> prochainesArrivees = new ArrayList<>();
         for (int i = 0; i < nombreArrivee; i++) {
-            prochainesArrivees.add(new ArriveeClient(tempsProchaineArrivee, batiment));
+            prochainesArrivees.add(new ArriveePersonne(tempsProchaineArrivee, batiment));
         }
 
         return prochainesArrivees;
@@ -116,6 +116,6 @@ public class ArriveeClient extends Evenement {
 
     @Override
     public String decrire() {
-        return "un client arrive à l'étage " + personne.getNumeroEtageCourant();
+        return "une personne arrive à l'étage " + personne.getNumeroEtageCourant() + " et demande un ascenseur";
     }
 }

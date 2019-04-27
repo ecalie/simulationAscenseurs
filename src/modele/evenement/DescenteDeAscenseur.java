@@ -33,34 +33,37 @@ public class DescenteDeAscenseur extends Evenement {
         List<Evenement> evenements = new ArrayList<>();
         nbDescentes = 0;
         int i = 0;
-        // pour toutes les personnes dans l'ascenseur
-        while (i < ascenseur.getPersonnes().size()) {
-            Personne p = ascenseur.getPersonnes().get(i);
 
-            // si l'ascenseur est arrivé à l'étage souhaité par la personne
-            if (p.getNumeroEtageCible() == ascenseur.getEtageCourant()) {
-                // faire descendre la personnes de l'ascenseur
-                p.setAscenseur(null);
+        synchronized (ascenseur.getPersonnes()) {
+            // pour toutes les personnes dans l'ascenseur
+            while (i < ascenseur.getPersonnes().size()) {
+                Personne p = ascenseur.getPersonnes().get(i);
 
-                this.ascenseur.getPersonnes().remove(p);
-                synchronized (batiment.getPersonnes()) {
-                    batiment.supprimerPersonne(p);
+                // si l'ascenseur est arrivé à l'étage souhaité par la personne
+                if (p.getNumeroEtageCible() == ascenseur.getEtageCourant()) {
+                    // faire descendre la personnes de l'ascenseur
+                    p.setAscenseur(null);
+
+                    this.ascenseur.getPersonnes().remove(p);
+                    synchronized (batiment.getPersonnes()) {
+                        batiment.supprimerPersonne(p);
+                    }
+                    this.nbDescentes++;
+
+                    // ajouter le temps de sercvice dans les statistiques
+                    Statistique.getInstance().ajouterTempsService(temps - p.getHeureArrivee());
+
+                    // générer l'événement correspondant au retour de la personne (après le temps de travail) s'il y a lieu
+                    if (p.getNumeroEtageCible() != 1) {
+                        // mettre à jour les étages de la personne
+                        p.setNumeroEtageCourant(p.getNumeroEtageCible());
+                        p.setNumeroEtageCible(1);
+                        // ajouter un évènement pour son retour
+                        evenements.add(new ArriveePersonne(temps + p.calculerTempsTravail(), batiment, p));
+                    }
+                } else {
+                    i++;
                 }
-                this.nbDescentes++;
-
-                // ajouter le temps de sercvice dans les statistiques
-                Statistique.getInstance().ajouterTempsService(temps - p.getHeureArrivee());
-
-                // générer l'événement correspondant au retour de la personne (après le temps de travail) s'il y a lieu
-                if (p.getNumeroEtageCible() != 1) {
-                    // mettre à jour les étages de la personne
-                    p.setNumeroEtageCourant(p.getNumeroEtageCible());
-                    p.setNumeroEtageCible(1);
-                    // ajouter un évènement pour son retour
-                    evenements.add(new ArriveeClient(temps + p.calculerTempsTravail(), batiment, p));
-                }
-            } else {
-                i++;
             }
         }
 

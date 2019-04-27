@@ -34,6 +34,7 @@ public class MonteeDansAscenseur extends Evenement {
     public List<Evenement> executer() {
         boolean nouvellePersonne = false;
         nbMontees = 0;
+
         for (Personne p : personnes)
             if (p.getAscenseur() == null && p.getNumeroEtageCourant() == ascenseur.getEtageCourant()) {
                 // calculer le temps d'attente et l'enregistrer
@@ -41,7 +42,9 @@ public class MonteeDansAscenseur extends Evenement {
 
                 // faire monter la personne dans l'ascenseur
                 p.setAscenseur(ascenseur);
-                this.ascenseur.getPersonnes().add(p);
+                synchronized (ascenseur.getPersonnes()) {
+                    this.ascenseur.getPersonnes().add(p);
+                }
                 nbMontees++;
 
                 // enregistrer qu'au moins une personne est montée

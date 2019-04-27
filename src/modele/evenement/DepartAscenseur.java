@@ -55,6 +55,6 @@ public class DepartAscenseur extends Evenement {
 
     @Override
     public String decrire() {
-        return "un ascenseur part de l'étage " + etageDepart + "   " + ascenseur;
+        return "un ascenseur part de l'étage " + etageDepart;
     }
 }

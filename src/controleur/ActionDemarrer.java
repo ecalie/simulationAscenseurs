@@ -3,7 +3,7 @@ package controleur;
 import modele.Batiment;
 import modele.Constante;
 import modele.GestionnaireEvenement;
-import modele.evenement.ArriveeClient;
+import modele.evenement.ArriveePersonne;
 import vue.FenetreParametres;
 
 import java.awt.event.ActionEvent;
@@ -37,7 +37,7 @@ public class ActionDemarrer implements ActionListener {
 
         //      - générer le premier événement
         GestionnaireEvenement ge = batiment.getGestionnaireEvenement();
-        ge.ajouterEvenement(new ArriveeClient(0, batiment));
+        ge.ajouterEvenement(new ArriveePersonne(0, batiment));
 
         //      - démarer le gestionaire d'événements
         ge.start();

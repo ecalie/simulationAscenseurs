@@ -1,6 +1,6 @@
 package modele;
 
-import modele.evenement.ArriveeClient;
+import modele.evenement.ArriveePersonne;
 import modele.evenement.Evenement;
 import vue.DessinBatiment;
 import vue.FenetreLogging;
@@ -50,7 +50,7 @@ public class GestionnaireEvenement extends Thread {
             // l'exécuter et ajouter les prochains événements à la liste
             // sauf dans le cas particulier où plusieurs personnes arrivent en même temps
             // dans ce cas, on n'ajoute qu'une seule fois les prochaines arrivées
-            if (!(e instanceof ArriveeClient) || !contientArrivee())
+            if (!(e instanceof ArriveePersonne) || !contientArrivee())
                 evenements.addAll(e.executer(fenetreLogging));
             else
                 e.executer(fenetreLogging);
@@ -70,7 +70,7 @@ public class GestionnaireEvenement extends Thread {
      */
     private boolean contientArrivee() {
         for (Evenement e : evenements)
-            if (e instanceof ArriveeClient && ((ArriveeClient) e).getPersonne().getNumeroEtageCourant() == 1)
+            if (e instanceof ArriveePersonne && ((ArriveePersonne) e).getPersonne().getNumeroEtageCourant() == 1)
                 return true;
         return false;
     }
