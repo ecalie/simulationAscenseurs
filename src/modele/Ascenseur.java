@@ -215,10 +215,13 @@ public class Ascenseur {
             case inferieur:
                 if (this.etageCourant > 0)
                     etageDestination = this.etageCourant - 1;
+                else
+                    bouger = false;
                 break;
             case superieur:
                 if (this.etageCourant < batiment.getNombreEtages() - 1)
                     etageDestination = this.etageCourant + 1;
+                else bouger = false;
                 break;
             case milieu:
                 etageDestination = batiment.getNombreEtages() / 2;
